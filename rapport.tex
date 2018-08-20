@@ -1,0 +1,125 @@
+% !TEX TS-program = PDFlatex
+% !TEX encoding = UTF-8 Unicode
+
+% Example of the Memoir class, an alternative to the default LaTeX classes such as article and book, with many added features built into the class itself.
+
+%\documentclass[12pt,a4paper]{memoir} % for a long document
+%\documentclass[french,12pt,a4paper,article]{memoir} % for a short document
+\documentclass[french,12pt,article]{memoir} % for a short document
+%\documentclass[french,12pt,a4paper]{article} % for a short document
+
+\usepackage{babel}
+\usepackage[utf8]{inputenc} % set input encoding to utf8
+
+
+% Don't forget to read the Memoir manual: memman.PDF
+\usepackage{color}
+\usepackage{pgfplotstable}
+\usepackage{pgfplots}
+\usetikzlibrary{plotmarks}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref} 
+\usepackage{graphicx}
+%%% Examples of Memoir customization
+%%% enable, disable or adjust these as desired
+
+%%% PAGE DIMENSIONS
+% Set up the paper to be as close as possible to both A4 & letter:
+%\settrimmedsize{11in}{210mm}{*} % letter = 11in tall; a4 = 210mm wide
+%\setlength{\trimtop}{0pt}
+%\setlength{\trimedge}{\stockwidth}
+%\addtolength{\trimedge}{-\paperwidth}
+%\settypeblocksize{*}{\lxvchars}{1.618} % we want to the text block to have golden proportionals
+%\setulmargins{50pt}{*}{*} % 50pt upper margins
+%\setlrmargins{*}{*}{1.618} % golden ratio again for left/right margins
+%\setheaderspaces{*}{*}{1.618}
+%\checkandfixthelayout 
+% This is from memman.PDF
+
+%%% \maketitle CUSTOMISATION
+% For more than trivial changes, you may as well do it yourself in a titlepage environment
+\pretitle{\begin{center}\sffamily\huge\MakeUppercase}
+\posttitle{\par\end{center}\vskip 0.5em}
+
+%%% ToC (table of contents) APPEARANCE
+\maxtocdepth{subsection} % include subsections
+\renewcommand{\cftchapterpagefont}{}
+\renewcommand{\cftchapterfont}{}     % no bold!
+
+%%% HEADERS & FOOTERS
+\pagestyle{ruled} % try also: empty , plain , headings , ruled , Ruled , companion
+
+%%% CHAPTERS
+\chapterstyle{hangnum} % try also: default , section , hangnum , companion , article, demo
+
+\renewcommand{\chaptitlefont}{\Huge\sffamily\raggedright} % set sans serif chapter title font
+\renewcommand{\chapnumfont}{\Huge\sffamily\raggedright} % set sans serif chapter number font
+
+%%% SECTIONS
+\hangsecnum % hang the section numbers into the margin to match \chapterstyle{hangnum}
+\maxsecnumdepth{subsection} % number subsections
+
+\setsecheadstyle{\Large\sffamily\raggedright} % set sans serif section font
+\setsubsecheadstyle{\large\sffamily\raggedright} % set sans serif subsection font
+\newcommand{\latex}{\LaTeX\xspace}
+\newcommand{\tex}{\TeX\xspace}
+\def\period{Années}
+\def\mois0{janvier 2010}
+\def\moisf{octobre 2017}
+\def\db{Daniel Bellemare}
+\def\nf{93 }
+\def\nfpdf{92 }
+\def\nt{5000 }
+\def\nl{1000 }
+\def\ff{fichier_type_de_transaction/}
+\def\fp{png/}
+\definecolor{darkgreen}{rgb}{0,0.8,0.2}
+\definecolor{mauve}{rgb}{0.88,0.69,1.0}
+\definecolor{morve}{rgb}{0.58,0.7,0.39}
+\definecolor{darkred}{rgb}{0.58,0.0,0.0}
+%\definecolor{ered}{rgb}{1.0,0.0,0.0}
+\definecolor{ered}{rgb}{0.0,0.0,0.0}   % ered devient noir
+\definecolor{pion}{rgb}{0.01.0,1.0}
+\frenchspacing
+\usepackage{pdfpages}
+%petrie raymond
+
+\title{\protect \large Rapport  sur les transactions  de Sylvie Auger}    
+\newcommand{\subtitle}{Préparé pour Me Éloïse Pion  \\ du bureau de Prévost Fortin D'Aoust, avocats}
+\author{Étienne Forest \\ Tsukuba, Japon }
+%\date{12 avril 2018} 
+\date{21 juillet 2018} % Delete this line to display the current date
+
+\usepackage[T1]{fontenc}
+\pgfplotsset{compat=1.15} 
+ 
+\usepackage{readarray}[2016-11-07]
+\usepackage{filecontents,lipsum}
+ 
+
+
+\renewcommand{\maketitlehookb}{B}
+ 
+\renewcommand{\maketitlehookb}{\centering\textsc{\subtitle}}
+
+\begin{document}
+ 
+\maketitle
+
+\newpage 
+{\footnotesize
+\tableofcontents* % the asterisk means that the contents itself isn't put into the ToC
+}
+\newpage 
+
+\chapter{Introduction: survol du rapport}\label{secsurvol}
+
+ 
+Le rapport contient les sections suivantes:
+
+ 
+
+
+\end{document}
+
+
+
