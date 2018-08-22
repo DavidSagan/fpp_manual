@@ -11,62 +11,33 @@
 \usepackage{babel}
 \usepackage[utf8]{inputenc} % set input encoding to utf8
 \usepackage{amsmath, amsthm, amssymb}
-\usepackage[T1]{fontenc}   % so _, <, and > print correctly in text.
-\usepackage[strings]{underscore}    % to use "_" in text
 
 \input{amssym.def}
 \input{amssym.tex}
 
 % Don't forget to read the Memoir manual: memman.PDF
+\usepackage{enumitem}
+\usepackage{alltt}
 \usepackage{color}
 \usepackage{pgfplotstable}
 \usepackage{pgfplots}
 \usetikzlibrary{plotmarks}
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref} 
 \usepackage{graphicx}
-%%% Examples of Memoir customization
-%%% enable, disable or adjust these as desired
-
-%%% PAGE DIMENSIONS
-% Set up the paper to be as close as possible to both A4 & letter:
-%\settrimmedsize{11in}{210mm}{*} % letter = 11in tall; a4 = 210mm wide
-%\setlength{\trimtop}{0pt}
-%\setlength{\trimedge}{\stockwidth}
-%\addtolength{\trimedge}{-\paperwidth}
-%\settypeblocksize{*}{\lxvchars}{1.618} % we want to the text block to have golden proportionals
-%\setulmargins{50pt}{*}{*} % 50pt upper margins
-%\setlrmargins{*}{*}{1.618} % golden ratio again for left/right margins
-%\setheaderspaces{*}{*}{1.618}
-%\checkandfixthelayout 
-% This is from memman.PDF
-
-\newcommand{\latex}{\LaTeX\xspace}
-\newcommand{\tex}{\TeX\xspace}
- 
-\def\th#1{theorem~\ref{#1}}
-\def\Th#1{Theorem~\ref{#1}}
-\def\eq#1{\rm Eq.~(\ref{#1})}
-\def\Eq#1{\rm Eq.~(\ref{#1})}
-\def\eqs#1{\rm Eqs.~(\ref{#1})}
-\def\eqe#1{(\ref{#1})}
-\def\sec#1{\rm Sec.~(\ref{#1})}
-\def\secs#1{\rm Secs.~(\ref{#1})}
-\def\sece#1{(\ref{#1})}
-\def\Fig#1{\rm Figure {\rm \ref{#1}}}
-\def\fig#1{\rm Figure {\rm \ref{#1}}}
-\def\fige#1{ {\rm \ref{#1}}}
-\def\figs#1{\rm Figures {\rm \ref{#1}}}
-
-\definecolor{darkgreen}{rgb}{0,0.8,0.2}
-\definecolor{mauve}{rgb}{0.88,0.69,1.0}
-\definecolor{morve}{rgb}{0.58,0.7,0.39}
-\definecolor{darkred}{rgb}{0.58,0.0,0.0}
-%\definecolor{ered}{rgb}{1.0,0.0,0.0}
-\definecolor{ered}{rgb}{0.0,0.0,0.0}   % ered devient noir
-\definecolor{pion}{rgb}{0.01.0,1.0}
+\usepackage{listings}
+\usepackage[T1]{fontenc}   % so _, <, and > print correctly in text.
+\usepackage[strings]{underscore}    % to use "_" in text
 %\frenchspacing
 \usepackage{pdfpages}
- 
+
+\input{macros.tex}
+
+\newlength{\dPar}
+\setlength{\dPar}{1.5ex}
+\setlength{\parskip}{\dPar}
+\setlength{\parindent}{0ex}
+
+%-----------------------------------------------------------------
 
 \title{ \protect \large Manual for FPP:   The Fully Polymorphic Package}    
 \newcommand{\subtitle}{Using examples from  PTC and BMAD }
@@ -101,7 +72,7 @@
 \subsection{FPP and PTC}
 
 FPP/PTC is an object oriented, open source, subroutine library for
-\begin{enumerate}
+\begin{enumerate}[itemsep=-0.5ex, topsep=-0.4ex]
 \item The manipulation and analysis of Taylor series and Taylor maps.
 \item Modeling of charged particle beams in accelerators using Taylor maps.
 \end{enumerate}
@@ -117,25 +88,21 @@ FPP/PTC has two parts. The Fully Polymorphic Package (FPP) is the part that deal
 FPP/PTC is written in object oriented Fortran2008. 
 
 FPP/PTC uses double precision real numbers defined using the type "real(dp)" "dp" is defined in FPP/PTC to correspond to double precision. For example, to define in a program a real number named "time" one would write:
-\begin{verbatim}
-  real(rp) time
-\end{verbatim}
+\begin{example}
+  real(dp) time
+\end{example}
 
 In Fortran, a "structure" (also called a "derived type") is like a struct in C or a class in C++. That is, a structure holds a set of components as defined by the programmer. With FPP, the "taylor" structure is used to hold a taylor series. The definition of the taylor type, as given in the file h_definition.f90 in the FPP/PTC library, is
-{\footnotesize
-\begin{verbatim}
+\begin{example1}
   TYPE TAYLOR
      INTEGER I       !  integer I is a pointer in old da-package of Berz
   END TYPE TAYLOR
-\end{verbatim}
-}
+\end{example1}
 The details of how a Taylor series is stored in the structure is not important here. What is important is that this structure can be used to hold a taylor series.
 
 For practical calculations it is often not convenient to deal directly with the taylor structure. For reasons that will be discussed later, the preferred structure to use is a polymorphic structure called "real_8". In general, a "polymorphic" variable is a variable that can act in different ways depending on the context of the program. Here, a real_8 variable can act as if it where a real number or it can act as if it were a Taylor series depending upon how it is initialized.
 An example program will make this clear.
-
-{\footnotesize
-\begin{verbatim}
+\begin{code}
   program real_8_example
   use pointer_lattice   ! Read in structure definitions, etc.
   implicit none
@@ -145,8 +112,8 @@ An example program will make this clear.
 
   !
 
-  long_print = .false.        ! Shorten "call print" output
-  call init (only_2d0, 3, 0)  ! Initialize FPP/PTC. #Variables = 2, Order = 3
+  longprint = .false.         ! Shorten "call print" output
+  call init (only_2d0, 3, 0)  ! Initialize: #Variables = 2, Order = 3
 
   x = 0.1d0
   call alloc(r8)          ! Initialize memory for r8
@@ -155,7 +122,7 @@ An example program will make this clear.
   print *, 'Print r8 acting as a real:'
   call print (r8)
 
-  r8 = 0.7d0 + dz_8(1) + 2*dz_8(2)**3 ! This will make r8 act as a Taylor series
+  r8 = 0.7d0 + dz_8(1) + 2*dz_8(2)**3 ! Init r8 to act as a Taylor series
   print *, 'Print r8 acting as a Taylor series:'
   call print(r8)
 
@@ -165,45 +132,67 @@ An example program will make this clear.
 
   call kill(r8)
   end program
-\end{verbatim}
-}
+\end{code}
 
-The lines
-\begin{verbatim}
+The line
+\begin{example}
+  type (real_8) r8
+\end{example}
+defines \vn{r8} as an instance of a \vn{real_8} variable. 
+
+\begin{example}
   call print (r8)
-\end{verbatim}
+\end{example}
 print the "value" of r8. When r8 is acting as a real number, as in the first call print statement, the output is just a real number:
 {\scriptsize
-\begin{verbatim}
+\begin{example}
   Print r8 acting as a Taylor series:
   0.100000000000000
-\end{verbatim}
+\end{example}
 }
 
 When r8 is acting as a Taylor series the call print statement prints out the Taylor series. Thus the output of the second call print is:
-{\scriptsize
-\begin{verbatim}
+\begin{example}
   Print r8 acting as a Taylor series:
 Properties, NO =    3, NV =    2, INA =   21
  *********************************************
 
    0  0.7000000000000000       0  0
    1   1.000000000000000       1  0
-\end{verbatim}
-}
+   3   2.000000000000000       0  3
+\end{example}
 Some explanation is required here. The initialization of FPP/PTC was done by the line
-{\scriptsize
-\begin{verbatim}
+\begin{example}
   call init (only_2d0, 3, 0)  ! Initialize FPP/PTC. #Variables = 2, Order = 3
-\end{verbatim}
-}
-This setup FPP/PTC to 
+\end{example}
+The first argument, "only_2d0",  configured FPP/PTC to construct any Taylor series as a function of two variables which will be labeled $z_1$ and $z_2$ here. The second argument, "3", gives the order at which the Taylor series is truncated to. That is, after this initialization, all Taylor series $t$ will be of the form
+\begin{equation}
+    t = \sum_{i,j}^{0 \le i+j \le 3} C_{ij} \, z_1^i \, z_2^j
+\end{equation}
+Each line in the above output, after the line with the asterisks, represents one term in the Taylor series. The general form for printing a Taylor term is:
+\begin{example}
+    <term-order>   <term-coefficient>    <z1-exponent>  <z2-exponent>
+\end{example}
+The <term-order> is the order of the term. That is, the sum of the exponents. For example, the last line in the above printout is
+\begin{example}
+   3   2.000000000000000       0  3
+\end{example}
+and this line represents the term $2 z_1^0 z_2^3$. The entire Taylor series is 
+\begin{equation}
+    t = 0.7 + z_1 + 2 \, z_2^3
+\end{equation}
 
 
-\begin{verbatim}
+\begin{example}
   long_print = .false.
-\end{verbatim}
+\end{example}
 makes the output of 
+
+
+\bibliography{nlinear}
+
+
+\end{document}
 
 
 
@@ -215,13 +204,6 @@ makes the output of
      REAL(DP) S   !   SCALING FOR KNOBS AND SPECIAL KIND=0
      LOGICAL(LP) :: ALLOC  1 IF TAYLOR IS ALLOCATED IN DA-PACKAGE
   END TYPE REAL_8
-
-
-
-\bibliography{nlinear}
-
-
-\end{document}
 
 
 

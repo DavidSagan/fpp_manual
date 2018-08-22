@@ -1,0 +1,61 @@
+%%% Examples of Memoir customization
+%%% enable, disable or adjust these as desired
+
+%%% PAGE DIMENSIONS
+% Set up the paper to be as close as possible to both A4 & letter:
+%\settrimmedsize{11in}{210mm}{*} % letter = 11in tall; a4 = 210mm wide
+%\setlength{\trimtop}{0pt}
+%\setlength{\trimedge}{\stockwidth}
+%\addtolength{\trimedge}{-\paperwidth}
+%\settypeblocksize{*}{\lxvchars}{1.618} % we want to the text block to have golden proportionals
+%\setulmargins{50pt}{*}{*} % 50pt upper margins
+%\setlrmargins{*}{*}{1.618} % golden ratio again for left/right margins
+%\setheaderspaces{*}{*}{1.618}
+%\checkandfixthelayout 
+% This is from memman.PDF
+
+\newcommand{\latex}{\LaTeX\xspace}
+\newcommand{\tex}{\TeX\xspace}
+ 
+\def\th#1{theorem~\ref{#1}}
+\def\Th#1{Theorem~\ref{#1}}
+\def\eq#1{\rm Eq.~(\ref{#1})}
+\def\Eq#1{\rm Eq.~(\ref{#1})}
+\def\eqs#1{\rm Eqs.~(\ref{#1})}
+\def\eqe#1{(\ref{#1})}
+\def\sec#1{\rm Sec.~(\ref{#1})}
+\def\secs#1{\rm Secs.~(\ref{#1})}
+\def\sece#1{(\ref{#1})}
+\def\Fig#1{\rm Figure {\rm \ref{#1}}}
+\def\fig#1{\rm Figure {\rm \ref{#1}}}
+\def\fige#1{ {\rm \ref{#1}}}
+\def\figs#1{\rm Figures {\rm \ref{#1}}}
+
+\definecolor{darkgreen}{rgb}{0,0.8,0.2}
+\definecolor{mauve}{rgb}{0.88,0.69,1.0}
+\definecolor{morve}{rgb}{0.58,0.7,0.39}
+\definecolor{darkred}{rgb}{0.58,0.0,0.0}
+%\definecolor{ered}{rgb}{1.0,0.0,0.0}
+\definecolor{ered}{rgb}{0.0,0.0,0.0}   % ered devient noir
+\definecolor{pion}{rgb}{0.01.0,1.0}
+
+\newcommand{\vn}{\begingroup\catcode`\_=11 \catcode`\%=11 \dottcmd}
+
+\newenvironment{example}
+  {\vspace{-2.0ex}\small \begin{alltt}}
+  {\end{alltt} \vspace{-1.5ex}}
+
+\newenvironment{example1}
+  {\vspace{-2.0ex}\footnotesize \begin{alltt}}
+  {\end{alltt} \vspace{-1.5ex}}
+
+\newenvironment{example2}
+  {\vspace{-2.0ex}\scriptsize \begin{alltt}}
+  {\end{alltt} \vspace{-1.5ex}}
+
+\definecolor{light-gray}{gray}{0.95}
+\lstset{backgroundcolor=\color{light-gray}}
+\lstset{xleftmargin=0cm}
+\lstset{framexleftmargin=0.3em}
+\lstset{basicstyle=\scriptsize}
+\lstnewenvironment{code}{}{}
