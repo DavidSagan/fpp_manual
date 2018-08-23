@@ -92,15 +92,7 @@ FPP/PTC uses double precision real numbers defined using the type "real(dp)" "dp
   real(dp) time
 \end{example}
 
-In Fortran, a "structure" (also called a "derived type") is like a struct in C or a class in C++. That is, a structure holds a set of components as defined by the programmer. With FPP, the "taylor" structure is used to hold a taylor series. The definition of the taylor type, as given in the file h_definition.f90 in the FPP/PTC library, is
-\begin{example1}
-  TYPE TAYLOR
-     INTEGER I       !  integer I is a pointer in old da-package of Berz
-  END TYPE TAYLOR
-\end{example1}
-The details of how a Taylor series is stored in the structure is not important here. What is important is that this structure can be used to hold a taylor series.
-
-For practical calculations it is often not convenient to deal directly with the taylor structure. For reasons that will be discussed later, the preferred structure to use is a polymorphic structure called "real_8". In general, a "polymorphic" variable is a variable that can act in different ways depending on the context of the program. Here, a real_8 variable can act as if it where a real number or it can act as if it were a Taylor series depending upon how it is initialized.
+In Fortran, a "structure" (also called a "derived type") is like a struct in C or a class in C++. A structure holds a set of components as defined by the programmer. With FPP, the "taylor" structure is used to hold a taylor series. For practical calculations it is often not convenient to deal directly with the taylor structure. For reasons that will be discussed later, the preferred structure to use is a polymorphic structure called "\vn{real_8}". In general, a "polymorphic" variable is a variable that can act in different ways depending on the context of the program. Here, a real_8 variable can act as if it where a real number or it can act as if it were a Taylor series depending upon how it is initialized.
 An example program will make this clear.
 \begin{code}
   program real_8_example
@@ -113,97 +105,141 @@ An example program will make this clear.
   !
 
   longprint = .false.         ! Shorten "call print" output
-  call init (only_2d0, 3, 0)  ! Initialize: #Variables = 2, Order = 3
+  call init (only_2d0, 3, 0)  ! Initialize: #Vars = 2, Order = 3
 
   x = 0.1d0
   call alloc(r8)          ! Initialize memory for r8
   r8 = x                  ! This will make r8 act as a real
 
-  print *, 'Print r8 acting as a real:'
+  print *, 'r8 is now acting as a real:'
   call print (r8)
 
-  r8 = 0.7d0 + dz_8(1) + 2*dz_8(2)**3 ! Init r8 to act as a Taylor series
-  print *, 'Print r8 acting as a Taylor series:'
+  r8 = 0.7d0 + dz_8(1) + 2*dz_8(2)**3 ! Init r8 as a Taylor series
+  print *, 'r8 is now acting as a Taylor series:'
   call print(r8)
 
   r8 = r8**4  ! Raise the Taylor series to the 4th power
-  print *, 'Series (0.7d0 + z1)**4:'
+  print *, 'This is r8^4:'
   call print (r8)
 
   call kill(r8)
   end program
 \end{code}
 
-The line
+The variable \vn{x} is defined as a double precision real number. The line
 \begin{example}
   type (real_8) r8
 \end{example}
-defines \vn{r8} as an instance of a \vn{real_8} variable. 
-
+defines \vn{r8} as an instance of a \vn{real_8} variable and the line
 \begin{example}
+  call alloc(r8)
+\end{example}
+initializes \vn{r8}. This initialization must be done before \vn{r8} is used. After \vn{r8} is used, any memory that has been allocated for use with \vn{r8} is reclaimed by calling the \vn{kill} routine
+\begin{example}
+  call kill(r8)
+\end{example}
+Strictly speaking, the \vn{kill} is not necessary here since \vn{kill} is called at end of the program. However, in a subroutine or function, all local instances of \vn{real_8} variables must be killed otherwise there will be a memory leak.
+
+When \vn{r8} is set to the real number \vn{x} in the line
+\begin{example}
+    r8 = x
+\end{example}
+this will cause \vn{r8} to act as a real number. This is verified by printing the value of \vn{r8} in the lines
+\begin{example}
+  print *, 'r8 is now acting as a real:'
   call print (r8)
 \end{example}
-print the "value" of r8. When r8 is acting as a real number, as in the first call print statement, the output is just a real number:
-{\scriptsize
+The output is just a single real number indicating that \vn{r8} is acting as a real:
 \begin{example}
-  Print r8 acting as a Taylor series:
+  r8 is now acting as a real:'
   0.100000000000000
 \end{example}
-}
+Notice that the \vn{print} statement uses the Fortran intrinsic print function while the \vn{call print} statement uses the overloaded print subroutine defined by \vn{FPP}.
 
-When r8 is acting as a Taylor series the call print statement prints out the Taylor series. Thus the output of the second call print is:
+When \vn{r8} is set to a Taylor series in the line
 \begin{example}
-  Print r8 acting as a Taylor series:
-Properties, NO =    3, NV =    2, INA =   21
- *********************************************
-
-   0  0.7000000000000000       0  0
-   1   1.000000000000000       1  0
-   3   2.000000000000000       0  3
+  r8 = 0.7d0 + dz_8(1) + 2*dz_8(2)**3 ! Init r8 as a Taylor series
 \end{example}
-Some explanation is required here. The initialization of FPP/PTC was done by the line
-\begin{example}
-  call init (only_2d0, 3, 0)  ! Initialize FPP/PTC. #Variables = 2, Order = 3
-\end{example}
-The first argument, "only_2d0",  configured FPP/PTC to construct any Taylor series as a function of two variables which will be labeled $z_1$ and $z_2$ here. The second argument, "3", gives the order at which the Taylor series is truncated to. That is, after this initialization, all Taylor series $t$ will be of the form
+this will cause \vn{r8} to act as a Taylor series. To understand how this initialization works, first consider the initialization of FPP/PTC which was done by the line
+\begin{example1}
+  call init (only_2d0, 3, 0)  ! Initialize FPP/PTC. #Vars = 2, Order = 3
+\end{example1}
+The first argument, \vn{only_2d0},  configured FPP/PTC to construct any Taylor series as a function of two variables. These two variables will be called $z_1$ and $z_2$ here. The second argument, \vn{3}, gives the order at which the Taylor series is truncated to. That is, after this initialization, all Taylor series $t$ will be of the form
 \begin{equation}
     t = \sum_{i,j}^{0 \le i+j \le 3} C_{ij} \, z_1^i \, z_2^j
 \end{equation}
+In the above initialization of \vn{r8}, \vn{dz_8(1)} represents the variable $z_1$ and \vn{dz_8(2)} represents the variable $z_2$. Thus \vn{r8} is initialized to the Taylor series
+\begin{equation}
+    t = 0.7 + z_1 + 2 \, z_2^3
+\end{equation}
+This is confirmed by printing \vn{r8} after it has been set via the lines
+\begin{example}
+  print *, 'r8 is now acting as a Taylor series:'
+  call print(r8)
+\end{example}
+The output is:
+\begin{example}
+  r8 is now acting as a Taylor series:
+  Properties, NO =    3, NV =    2, INA =   21
+   *********************************************
+
+     0  0.7000000000000000       0  0
+     1   1.000000000000000       1  0
+     3   2.000000000000000       0  3
+\end{example}
 Each line in the above output, after the line with the asterisks, represents one term in the Taylor series. The general form for printing a Taylor term is:
 \begin{example}
-    <term-order>   <term-coefficient>    <z1-exponent>  <z2-exponent>
+  <term-order>   <term-coefficient>    <z1-exponent>  <z2-exponent>
 \end{example}
 The <term-order> is the order of the term. That is, the sum of the exponents. For example, the last line in the above printout is
 \begin{example}
    3   2.000000000000000       0  3
 \end{example}
-and this line represents the term $2 z_1^0 z_2^3$. The entire Taylor series is 
-\begin{equation}
-    t = 0.7 + z_1 + 2 \, z_2^3
-\end{equation}
+and this line represents the term $2 \, z_1^0 \, z_2^3$. 
 
-
+Once \vn{r8} has been initialized, it can be used in expressions. Thus the line
 \begin{example}
-  long_print = .false.
+  r8 = r8**4  ! Raise the Taylor series to the 4th power
 \end{example}
-makes the output of 
+raises \vn{r8} to the 4th power and puts the result back into \vn{r8}. This is confirmed by the final print which produces
+\begin{example}
+  This is r8^4:
+  Properties, NO =    3, NV =    2, INA =   23
+  *********************************************
 
+    0  0.2400999999999999       0  0
+    1   1.372000000000000       1  0
+    2   2.940000000000000       2  0
+    3   2.800000000000000       3  0
+    3   2.743999999999999       0  3
+\end{example}
+Notice that the map has been truncated so that no term has an order higher than 3 as expected. Expressions using \vn{real_8} variables involve overloaded operators as discussed in section xxx.
+
+%--------------------------------------------------------------
+\subsection{Real\_8 Under the Hood}
+
+The particulars of how the \vn{real_8} structure is defined are generally not of interest to the general user. But it is instructive to take a quick look. In the \vn{FPP} code the \vn{real_8} structure is defined as:
+\begin{example1}
+  TYPE REAL_8
+     TYPE (TAYLOR) T      !  USED IF TAYLOR
+     REAL(DP) R           !    USED IF REAL
+     INTEGER KIND  !  0,1,2,3 (1=REAL,2=TAYLOR,3=TAYLOR KNOB)
+     INTEGER I   !   USED FOR KNOBS AND SPECIAL KIND=0
+     REAL(DP) S   !   SCALING FOR KNOBS AND SPECIAL KIND=0
+     LOGICAL(LP) :: ALLOC  1 IF TAYLOR IS ALLOCATED IN DA-PACKAGE
+  END TYPE REAL_8
+\end{example1}
+The \vn{t} component of the structure is of type \vn{taylor} and is used if a \vn{real_8} variable is acting as a Taylor series. The \vn{r} component is used if a \vn{real_8} variable is acting as a real number. The \vn{kind} component is an integer that sets the behavior of a \vn{real_8} variable. Besides behaving as \vn{real} or a \vn{Taylor series}, a \vn{real_8} variable may behave as a "\vn{knob}" which will be explained later.
+
+The \vn{real_8} structure contains a component of type \vn{taylor}. The definition of the taylor structure is
+\begin{example1}
+  TYPE TAYLOR
+     INTEGER I       !  integer I is a pointer in old da-package of Berz
+  END TYPE TAYLOR
+\end{example1}
+The component \vn{i} is a pointer to the differential algebra package of Berz that is contained in FPP. The details of how a Taylor series is stored in the structure is not important here. What is important is that this structure can be used to hold a Taylor series.
 
 \bibliography{nlinear}
 
 
 \end{document}
-
-
-
-  TYPE REAL_8
-     TYPE (TAYLOR) T      !  USED IF TAYLOR
-     REAL(DP) R           !    USED IF REAL
-     INTEGER KIND  !  0,1,2,3 (1=REAL,2=TAYLOR,3=TAYLOR KNOB, 0=SPECIAL)
-     INTEGER I   !   USED FOR KNOBS AND SPECIAL KIND=0
-     REAL(DP) S   !   SCALING FOR KNOBS AND SPECIAL KIND=0
-     LOGICAL(LP) :: ALLOC  1 IF TAYLOR IS ALLOCATED IN DA-PACKAGE
-  END TYPE REAL_8
-
-
-
