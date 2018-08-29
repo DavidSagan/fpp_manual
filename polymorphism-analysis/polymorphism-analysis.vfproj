@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VisualStudioProject ProjectCreator="Intel Fortran" Keyword="Console Application" Version="11.0" ProjectIdGuid="{24E16CD7-BDCE-42CF-BBF7-39F5386272F4}">
+	<Platforms>
+		<Platform Name="Win32"/></Platforms>
+	<Configurations>
+		<Configuration Name="Debug|Win32">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" DebugInformationFormat="debugEnabled" Optimization="optimizeDisabled" WarnInterfaces="true" Traceback="true" BoundsCheck="true" StackFrameCheck="true" RuntimeLibrary="rtMultiThreadedDebugDLL"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" GenerateDebugInformation="true" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration>
+		<Configuration Name="Release|Win32">
+				<Tool Name="VFFortranCompilerTool" SuppressStartupBanner="true" RuntimeLibrary="rtMultiThreadedDLL"/>
+				<Tool Name="VFLinkerTool" LinkIncremental="linkIncrementalNo" SuppressStartupBanner="true" SubSystem="subSystemConsole"/>
+				<Tool Name="VFResourceCompilerTool"/>
+				<Tool Name="VFMidlTool" SuppressStartupBanner="true"/>
+				<Tool Name="VFCustomBuildTool"/>
+				<Tool Name="VFPreLinkEventTool"/>
+				<Tool Name="VFPreBuildEventTool"/>
+				<Tool Name="VFPostBuildEventTool"/>
+				<Tool Name="VFManifestTool" SuppressStartupBanner="true"/></Configuration></Configurations>
+	<Files>
+		<Filter Name="Header Files" Filter="fi;fd;h;inc"/>
+		<Filter Name="Resource Files" Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"/>
+		<Filter Name="Source Files" Filter="f90;for;f;fpp;ftn;def;odl;idl">
+		<File RelativePath="..\..\..\basic\a_scratch_size.f90"/>
+		<File RelativePath="..\..\..\basic\b_da_arrays_all.f90"/>
+		<File RelativePath="..\..\..\basic\c_dabnew.f90"/>
+		<File RelativePath="..\..\..\basic\complex_fpp\cb_da_arrays_all.f90"/>
+		<File RelativePath="..\..\..\basic\complex_fpp\cc_dabnew.f90"/>
+		<File RelativePath="..\..\..\basic\complex_fpp\Ci_tpsa.f90"/>
+		<File RelativePath="..\..\..\basic\d_lielib.f90"/>
+		<File RelativePath="..\..\..\basic\h_definition.f90"/>
+		<File RelativePath="..\..\..\basic\i_tpsa.f90"/>
+		<File RelativePath="..\..\..\basic\j_tpsalie.f90"/>
+		<File RelativePath="..\..\..\basic\k_tpsalie_analysis.f90"/>
+		<File RelativePath="..\..\..\basic\l_complex_taylor.f90"/>
+		<File RelativePath="..\..\..\basic\m_real_polymorph.f90"/>
+		<File RelativePath="..\..\..\basic\n_complex_polymorph.f90"/>
+		<File RelativePath="..\..\..\basic\o_tree_element.f90"/>
+		<File RelativePath=".\z-analysis-included.f90"/></Filter></Files>
+	<Globals/></VisualStudioProject>

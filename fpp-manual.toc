@@ -1,0 +1,25 @@
+\babel@toc {english}{}
+\contentsline {section}{\numberline {1}Introduction to FPP/PTC}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}FPP and PTC}{3}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Where to Obtain FPP/PTC}{4}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}Concepts}{4}{subsection.1.3}
+\contentsline {subsection}{\numberline {1.4}Real\_8 Under the Hood}{7}{subsection.1.4}
+\contentsline {subsection}{\numberline {1.5}Fundamental polymorphic types used in any code}{8}{subsection.1.5}
+\contentsline {subsubsection}{\numberline {1.5.1}Type \vn {taylor}}{8}{subsubsection.1.5.1}
+\contentsline {subsubsection}{\numberline {1.5.2}Type \vn {complextaylor}}{8}{subsubsection.1.5.2}
+\contentsline {subsubsection}{\numberline {1.5.3}Type \vn {real_8}}{10}{subsubsection.1.5.3}
+\contentsline {subsubsection}{\numberline {1.5.4}Type \vn {complex_8}}{13}{subsubsection.1.5.4}
+\contentsline {subsection}{\numberline {1.6}Type \vn {probe_8} specific to PTC}{13}{subsection.1.6}
+\contentsline {subsubsection}{\numberline {1.6.1}The x(6) component of \begingroup \catcode `\_=11 \catcode `\%=11 \texttt {probe_8}\endgroup }{14}{subsubsection.1.6.1}
+\contentsline {subsubsection}{\numberline {1.6.2}The spin and quaternion components of \begingroup \catcode `\_=11 \catcode `\%=11 \texttt {probe_8}\endgroup }{15}{subsubsection.1.6.2}
+\contentsline {subsubsection}{\numberline {1.6.3}The components of type \begingroup \catcode `\_=11 \catcode `\%=11 \texttt {rf_phasor_8_8}\endgroup }{15}{subsubsection.1.6.3}
+\contentsline {subsubsection}{\numberline {1.6.4}The real components \begingroup \catcode `\_=11 \catcode `\%=11 \texttt {E_i_j(6,6)}\endgroup }{16}{subsubsection.1.6.4}
+\contentsline {subsubsection}{\numberline {1.6.5}Real(dp) type \vn {probe} specific to PTC}{16}{subsubsection.1.6.5}
+\contentsline {subsection}{\numberline {1.7}The type {\begingroup \catcode `\_=11 \catcode `\%=11 \texttt {c_taylor}\endgroup } and the Taylor maps {\begingroup \catcode `\_=11 \catcode `\%=11 \texttt {c_damap}\endgroup } for analysis}{17}{subsection.1.7}
+\contentsline {subsubsection}{\numberline {1.7.1}The type {\begingroup \catcode `\_=11 \catcode `\%=11 \texttt {c_taylor}\endgroup } and the complex Berz's package }{20}{subsubsection.1.7.1}
+\contentsline {subsubsection}{\numberline {1.7.2}The type {\begingroup \catcode `\_=11 \catcode `\%=11 \texttt {c_damap}\endgroup } }{22}{subsubsection.1.7.2}
+\contentsline {subsubsection}{\numberline {1.7.3}Interaction between the worlds of probes and Taylor maps }{24}{subsubsection.1.7.3}
+\contentsline {section}{\numberline {2}Operations on Taylor structures}{25}{section.2}
+\contentsline {subsection}{\numberline {2.1}Obsolete Types}{25}{subsection.2.1}
+\contentsline {section}{\numberline {3}overloading}{25}{section.3}
+\contentsline {section}{\numberline {4}subpackage}{25}{section.4}
