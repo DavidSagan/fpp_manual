@@ -9,6 +9,7 @@ type(c_damap) Identity, one_period_map,diag
 type(c_normal_form) normal
 integer :: nd = 1 , no = 2 , np = 0 , imap , ipol,again
 logical success,ok
+longprint=.false.
 ! nd = number of degrees of freedom
 ! no =  order of Taylor series
 ! Number of extra variables beyond 2*nd

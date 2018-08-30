@@ -5,7 +5,7 @@ type(real_8) :: z(2)
 real(dp) :: z0(2) = (/0,0/)  ! special orbit
 type(reaL_8)  :: L , B, K_q , K_s 
 integer :: nd = 1 , no = 2 , np = 0 ,ip
-
+longprint=.false.
 ! nd = number of degrees of freedom
 ! no =  order of Taylor series
 ! Number of extra variables beyond 2*nd
