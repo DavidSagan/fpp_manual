@@ -242,9 +242,9 @@ The component \vn{i} is a pointer to the differential algebra package of Berz th
 The reason for hiding a Taylor series under the hood is to defer its use to running time. We really do not know in a tracking code like PTC when the user will need a Taylor series and even what the parameters of that series might be: phase space, if so how many (2,4,6,?), and parameters such as quadrupole strengths which are taken from the huge set of magnets present in the system.
 
 
-\subsection{Fundamental polymorphic types used in any code}\label{sec:funtype}
+\subsection{Fundamental Types}\label{sec:funtype}
 
-In this section we list all the simple types that exist in FPP in order of increasing complexity. They are needed if one write a simple tracking code.
+In this section we list all the simple types that exist in FPP in order of increasing complexity.
 
 \subsubsection{Type  \protect\vn{taylor}}
 
@@ -254,7 +254,7 @@ In this section we list all the simple types that exist in FPP in order of incre
   END TYPE TAYLOR
 \end{example}
 
-This type overloads the Taylor series of the original real ``DA-Package'' of Berz. Its direct use is discouraged. Tracking programs should use the real polymorph.
+This type overloads the Taylor series of the original real ``DA-Package'' of Berz. See \sref{sec:real8}. Its direct use is discouraged. Tracking programs should use the real polymorph type \vn{real_8}.
 
 \subsubsection{Type \protect\vn{complextaylor}}\label{sec:complextaylor}
 
@@ -264,11 +264,9 @@ This type overloads the Taylor series of the original real ``DA-Package'' of Ber
      type (taylor) i
   END TYPE COMPLEXTAYLOR
 \end{example}
-
-This complex Taylor is made of two Taylor series which represent the real and imaginary parts. Its direct use is also  discouraged as was already explained in \sec{sec:real8} .  Consider this code fragment:
-
-
-
+The complex Taylor is made of two Taylor series which represent the real and imaginary parts. Its direct use is also discouraged as was already explained in \sec{sec:real8}.
+  
+Consider this code fragment:
 \begin{code}
     type(complextaylor) z1,z2
  
@@ -315,10 +313,11 @@ The variable \vn{z1} is, in Leibnitz  mathematical  language, $dx+i \, dy$. The 
    2   2.000000000000000       1  1  0  0
 \end{example1}
 
- \subsubsection{Type \protect\vn{real_8}}  \label{sec:real8code}
+%-------------------------------------------------------------------
+\subsubsection{Type \protect\vn{real_8}}  \label{sec:real8code}
 
 
-This type is the most important type if you write a tracking code of respectable length.  Imagine that your code tracks in one degrees of freedom (1-d-f). Then you will push two variables through your magnets, let us call them ${\bf z}=(z_1,z_2)$. These variables will denote  the position and the tangent of an angle in our little example.  If it is our  intention to always extract a Taylor series around a special orbit, then  it would suffice to declare as \vn{taylor} only the phase space variables ${\bf z}=(z_1,z_2)$ and any temporary variables the code might used during its calculations. 
+This type is the most important type if you write a tracking code of respectable length.  Imagine that your code tracks in one degrees of freedom (1-d-f). Then you will push two phase space variables through your magnets, let us call them ${\bf z}=(z_1,z_2)$. These variables will denote  the position and the tangent of an angle in our little example.  If it is our  intention to always extract a Taylor series around a special orbit, then  it would suffice to declare as \vn{taylor} only the phase space variables ${\bf z}=(z_1,z_2)$ and any temporary variables the code might used during its calculations. 
 
 But what if we want to include some parameters, such as quadrupole strengths in the calculation? Since this is a user decision, it is best if the code decides at execution time using the type  \vn{real_8}.  This was explained already  in \sec{sec:real8} but here we provide a small complete example.
 
@@ -327,9 +326,9 @@ program my_small_code_real_8
 use polymorphic_complextaylor
 implicit none
 type(real_8) :: z(2)  
-real(dp) :: z0(2) = (/0,0/)  ! special orbit
+real(dp) :: z0(2) = [0, 0]  ! special orbit
 type(reaL_8)  :: L , B, K_q , K_s 
-integer :: nd = 1 , no = 2 , np = 0 ,ip
+integer :: nd = 1 , no = 2 , np = 0, ip
 longprint = .false.         ! Shorten "call print" output
 ! nd = number of degrees of freedom
 ! no =  order of Taylor series
@@ -355,8 +354,8 @@ read(5,*) no
 
 call init(no,nd,np) ! Initializes TPSA 
 
-z(1)=z0(1) + dz_8(1) <--- Taylor monomial z_1 added
-z(2)=z0(2) + dz_8(2) <--- Taylor monomial z_2 added
+z(1)=z0(1) + dz_8(1) ! <--- Taylor monomial z_1 added
+z(2)=z0(2) + dz_8(2) ! <--- Taylor monomial z_2 added
 
 call track(z)
 
@@ -450,16 +449,16 @@ So in summary a polymorph can be as mentioned in \sec{sec:real8}:
  
  The type  \protect\vn{complex_8} is rarely used in a tracking code since all quantities we compute are ultimately real. However once in a while it is useful to go into complex coordinates temporarily. If the type \vn{complex_8} did not exist, then a code could become extremely difficult to write. This happens a lot when Maxwell's equation is written in cylindrical coordinate. In such a case, if ${\bf z}=(x,p_x,y,p_y)$, then most intermediate calculation involve a quantity $q=x+i\,y$. Therefore it is extremely useful inside one's code to declare \vn{q} as a complex polymorph. This happens in some magnets of PTC but it is generally hidden from a normal user. 
  
- \begin{example2}
-TYPE COMPLEX_8
- TYPE (COMPLEXTAYLOR) T 
- COMPLEX(DP) R
- LOGICAL(LP) ALLOC
- INTEGER KIND
- INTEGER I,J 
+\begin{example2}
+  TYPE COMPLEX_8
+  TYPE (COMPLEXTAYLOR) T 
+  COMPLEX(DP) R
+  LOGICAL(LP) ALLOC
+  INTEGER KIND
+  INTEGER I,J 
  COMPLEX(DP) S
 END TYPE COMPLEX_8
-  \end{example2}
+\end{example2}
   
  As in the case of the real polymorph, the \vn{t} component contains the complex Taylor series and the \vn{r} component contains the complex number if the polymorph is not a Taylor series. 
   
@@ -485,11 +484,8 @@ The code PTC tracks the following Fortran structure:
 
 As the reader can see, it is made out of other structures which are themselves made of \vn{real_8} or simple real numbers.  I will describe each component.
 
- 
-  
-  
-
-  \subsubsection{The   x(6) component of \vn{probe_8}  }\label{sec:codetypex6}
+%-------------------------------
+\subsubsection{The x(6) component of \vn{probe_8}  }\label{sec:codetypex6}
 
  This represents the orbital part of the ray. Thus we have the following associations:
  
