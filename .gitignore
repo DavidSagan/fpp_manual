@@ -1,0 +1,17 @@
+*.mod
+*.exe
+*.aux
+*.gz
+*.obj
+*.sln
+*.u2d
+*.suo
+*.vfproj
+*.htm
+mypause__genmod.f90
+mypauses__genmod.f90
+*.manifest
+*.pdb
+
+
+
