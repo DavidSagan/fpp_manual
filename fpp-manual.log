@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.6.4)  30 AUG 2018 14:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.6.4)  30 AUG 2018 14:09
 entering extended mode
 **./fpp-manual.tex
 (fpp-manual.tex
@@ -1200,11 +1200,7 @@ File: pppdftex.def 2017/10/31 v0.5l Pdfpages driver for pdfTeX (AM)
 LaTeX Warning: Unused global option(s):
     [article].
 
-(fpp-manual.aux
-
-LaTeX Warning: Label `sec:codetype' multiply defined.
-
-)
+(fpp-manual.aux)
 \openout1 = `fpp-manual.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 50.
@@ -1612,17 +1608,13 @@ Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 896.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 896.
 Package rerunfilecheck Info: File `fpp-manual.out' has not changed.
 (rerunfilecheck)             Checksum: FB03BD84850E90BBF1F9FF8CB3D18A85;2237.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 896.
  ) 
 Here is how much of TeX's memory you used:
- 30224 strings out of 493305
- 710215 string characters out of 3128933
- 901353 words of memory out of 3000000
- 32982 multiletter control sequences out of 15000+200000
+ 30225 strings out of 493305
+ 710231 string characters out of 3128933
+ 901377 words of memory out of 3000000
+ 32983 multiletter control sequences out of 15000+200000
  25977 words of font info for 74 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  69i,16n,98p,1005b,1768s stack positions out of 5000i,500n,10000p,200000b,50000s
