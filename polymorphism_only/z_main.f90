@@ -17,7 +17,7 @@ use polymorphic_complextaylor
     implicit none
     type(real_8) x
     type(complextaylor) z1,z2
- 
+     longprint=.false.
     call init(2,4)
    
     call alloc(x)

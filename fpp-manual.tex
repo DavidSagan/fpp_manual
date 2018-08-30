@@ -239,6 +239,9 @@ The \vn{real_8} structure contains a component of type \vn{taylor}. The definiti
 \end{example1}
 The component \vn{i} is a pointer to the differential algebra package of Berz that is contained in FPP. The details of how a Taylor series is stored in the structure is not important here. What is important is that this structure can be used to hold a Taylor series.
 
+The reason for hiding a Taylor series under the hood is to defer its use to running time. We really do not know in a tracking code like PTC when the user will need a Taylor series and even what the parameters of that series might be: phase space, if so how many (2,4,6,?), and parameters such as quadrupole strengths which are taken from the huge set of magnets present in the system.
+
+
 \subsection{Fundamental polymorphic types used in any code}\label{sec:funtype}
 
 In this section we list all the simple types that exist in FPP in order of increasing complexity. They are needed if one write a simple tracking code.
@@ -286,39 +289,30 @@ The variable \vn{z1} is, in Leibnitz  mathematical  language, $dx+i \, dy$. The 
 \begin{example1}
   this is z1
 
- etall    1, NO =    2, NV =    4, INA =   23
+ Properties, NO =    2, NV =    4, INA =   23
  *********************************************
 
-    I  COEFFICIENT          ORDER   EXPONENTS
-      NO =     2      NV =     4
    1   1.000000000000000       1  0  0  0
-    -1   0.000000000000000       0  0  0  0
 
- etall    1, NO =    2, NV =    4, INA =   24
+
+ Properties, NO =    2, NV =    4, INA =   24
  *********************************************
 
-    I  COEFFICIENT          ORDER   EXPONENTS
-      NO =     2      NV =     4
    1   1.000000000000000       0  1  0  0
-    -1   0.000000000000000       0  0  0  0
+
   this is z2
 
- etall    1, NO =    2, NV =    4, INA =   25
+ Properties, NO =    2, NV =    4, INA =   25
  *********************************************
 
-    I  COEFFICIENT          ORDER   EXPONENTS
-      NO =     2      NV =     4
    2   1.000000000000000       2  0  0  0
    2  -1.000000000000000       0  2  0  0
-    -2   0.000000000000000       0  0  0  0
 
- etall    1, NO =    2, NV =    4, INA =   26
+
+ Properties, NO =    2, NV =    4, INA =   26
  *********************************************
 
-    I  COEFFICIENT          ORDER   EXPONENTS
-      NO =     2      NV =     4
    2   2.000000000000000       1  1  0  0
-    -1   0.000000000000000       0  0  0  0
 \end{example1}
 
  \subsubsection{Type \protect\vn{real_8}}  \label{sec:real8code}
@@ -394,23 +388,18 @@ In this little code, there is one drift of length \vn{L} followed by a multipole
  The order of the Taylor series ?
 2
 
- etall    1, NO =    2, NV =    2, INA =   20
+ Properties, NO =    2, NV =    2, INA =   20
  *********************************************
 
-    I  COEFFICIENT          ORDER   EXPONENTS
-      NO =     2      NV =     2
    1   1.000000000000000       1  0
    1   1.000000000000000       0  1
-    -2   0.000000000000000       0  0
 
- etall    1, NO =    2, NV =    2, INA =   21
+
+ Properties, NO =    2, NV =    2, INA =   21
  *********************************************
 
-    I  COEFFICIENT          ORDER   EXPONENTS
-      NO =     2      NV =     2
    1 -0.1000000000000000       1  0
    1  0.9000000000000000       0  1
-    -2   0.000000000000000       0  0
 \end{example2}
 
 
@@ -431,25 +420,20 @@ However, we can now require that the multipole strengths be variables of the Tay
  The order of the Taylor series ?
 2
 
- etall    1, NO =    2, NV =    3, INA =   22
+ Properties, NO =    2, NV =    3, INA =   22
  *********************************************
 
-    I  COEFFICIENT          ORDER   EXPONENTS
-      NO =     2      NV =     3
    1   1.000000000000000       1  0  0
    1   1.000000000000000       0  1  0
-    -2   0.000000000000000       0  0  0
 
- etall    1, NO =    2, NV =    3, INA =   23
+
+ Properties, NO =    2, NV =    3, INA =   23
  *********************************************
 
-    I  COEFFICIENT          ORDER   EXPONENTS
-      NO =     2      NV =     3
    1 -0.1000000000000000       1  0  0
    1  0.9000000000000000       0  1  0
    2  -1.000000000000000       1  0  1
    2  -1.000000000000000       0  1  1
-    -4   0.000000000000000       0  0  0
 \end{example2}
 
 Again, we must emphasize that while it would have been easy here to tun with  the type \vn{taylor} for all the variables, it is totally infeasible in a real tracking code to either recompile the code or allow all parameters of the systems to be Taylor series. This is why typical matrix\footnote{This is not true of Berz's COSY INFINITY which handles variable memory of TPSA within its own internal language.} codes, not using TPSA, are limited to a small set of Taylor variables, usually the six phase space variables.
@@ -621,7 +605,7 @@ end type quaternion_8
       
       The components of the \vn{probe} are all analogous to the components of the \vn{probe_8} with \vn{real_8} replaced by \vn{real(dp)}. This most operations are acting directly and quickly on Fortran intrinsic types.
       
- \subsection{The type {\vn{c_taylor}}  and the Taylor maps  {\vn{c_damap}}   for analysis}
+ \subsection{The type {\vn{c_taylor}}  and the Taylor maps  {\vn{c_damap}}   for analysis}\label{sec:taymap}
  
    PTC is an integrator  just like our little example of \sec{sec:real8code}. This little code  calls the tracking subroutine 
    \begin{code}
@@ -699,37 +683,21 @@ module \vn{tree_element_module}  where  \vn{probe} or  \vn{probe_8} are defined:
     
     
     \begin{example1}
- Give  L and parameter ordinality (0 if not a parameter)
-1 0
- Give  B  and parameter ordinality (0 if not a parameter)
-0 0
- Give  K_q and parameter ordinality (0 if not a parameter)
-.1 0
- Give  K_s and parameter ordinality (0 if not a parameter)
-0 0
- The order of the Taylor series ?
-2
-
- etall    1, NO =    2, NV =    2, INA =   20
+ Properties, NO =    2, NV =    2, INA =   20
  *********************************************
 
-    I  COEFFICIENT          ORDER   EXPONENTS
-      NO =     2      NV =     2
    1   1.000000000000000       1  0
    1   1.000000000000000       0  1
-    -2   0.000000000000000       0  0
 
- etall    1, NO =    2, NV =    2, INA =   21
+
+ Properties, NO =    2, NV =    2, INA =   21
  *********************************************
 
-    I  COEFFICIENT          ORDER   EXPONENTS
-      NO =     2      NV =     2
    1 -0.1000000000000000       1  0
    1  0.9000000000000000       0  1
-    -2   0.000000000000000       0  0
 \end{example1}
 
-It is clear that one could state from the above result:
+It is clear that one could deduce from the above result:
 %
 %]|Expr|[#b @`b___})b A# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
 %|-[-<bf ""*|:"z:!-],F,]<c!$1^["" ^1^1($,M0,N1}(#0,N9}}}: ,H:! |
@@ -741,20 +709,26 @@ It is clear that one could state from the above result:
 Therefore we could say that ${\bf z}$ or equivalently a \vn{probe_8} containing the same information is a Taylor map. But this is not done in PTC for several reasons:
 
 \begin{enumerate}
-\item The variables  $(z_1,z_2)$ could   infinitesimal with respect to machine parameters, in which case any attempt to concatenate the matrix is pure nonsense 
-\item\label{item:st}  One should not confuse a set with an algebraic structure which acts on the said set.
+\item The variables  $(z_1,z_2)$ could  be  infinitesimal with respect to machine parameters, in which case any attempt to concatenate the matrix is pure nonsense 
+\item\label{item:st}  One should not confuse a set with an algebraic structure which  the  set itself.
 \end{enumerate}
 
-Item \ref{item:st} requires an explanation. Take for example  a pair of real numbers from the set  $\mathbb{R} \times \mathbb{R}$.  A priori we have no idea what structures are imposed on this pair of numbers. Indeed the structure could be    a complex number field, a one-dimensional complex vector space, a two dimensional real vector space, a twice infinite dimensional  vector space on the field of rationals, etc... In a code (or in a mathematical article), we could decide to  distinguish these structures by using a different ``plus'' sign depending on the structure: $+$ if complex numbers and say a $\oplus$ if they are vectors. 
+Item \ref{item:st} requires an explanation. Take for example  a pair of real numbers from the set  $\mathbb{R} \times \mathbb{R}$.  A priori we have no idea what structures are imposed on this pair of numbers. Indeed the structure could be    a complex number field, a ring of differentials (running TPSA to order 1 with one parameter),  a one-dimensional complex vector space, a two dimensional real vector space, a twice infinite dimensional  vector space on the field of rationals, etc... In a code (or in a mathematical article), we could decide to  distinguish these structures by using a different ``plus'' sign depending on the structure: $+$ if complex numbers and say a $\oplus$ if they are vectors. 
 
-The solution in FPP is to define  a new type and  keep the $+,*,\ldots $ signs for this new type.  Therefore we do not allow the concatenation of \vn{probe_8} even when it is reasonable. Instead we construct a map, type \vn{c_damap}, only and only if this construction is meaningful.  FPP does not prevent the construction of meaningless Taylor maps. PTC on the other hand does if the rules between the \vn{probe_8} and \vn{c_damap}  types are religiously\footnote{Neither FPP, nor PTC nor  BMAD prevents  a user to do crazy things and shove a  \vn{probe_8} into a \vn{c_damap}  anyway he sees fit. But beware of the results.}  observed.  This will now be explained before we actually describe all the operators available.
+If the object in FPP is extremely important, the solution in FPP is to define  a new type and  keep the $+,*,\ldots $ signs for this new type.  Therefore we do not allow the concatenation of \vn{probe_8} even when it is reasonable. Instead we construct a map, type \vn{c_damap} described in \sec{sec:cdamap}, only and only if this construction is meaningful.  FPP does not prevent the construction of meaningless Taylor maps. The \vn{c_damap}  of PTC will be meaningful if the rules between the \vn{probe_8} and \vn{c_damap}  types are religiously\footnote{Neither FPP, nor PTC nor  BMAD prevents  a user to do crazy things and shove a  \vn{probe_8} into a \vn{c_damap}  anyway he sees fit. But beware of the results.}  observed.  
 
-  \subsubsection{The type {\vn{c_taylor}} and the complex Berz's package }
+Conversely we define a new operator when the creation of a new type would too cumbersome due to its infrequent usage.
+
+This will now be explained in \sec{sec:typeops} where  we describe  the important types and associated operators.
+
+
+
+  \subsubsection{The type {\vn{c_taylor}} and the complex Berz's package }\label{sec:cdamap}
   
   The reader will notice two seemingly identical Fortran files : \vn{c_dabnew.f90} and  \vn{cc_dabnew.f90}. The first package creates and manipulates real Taylor series. In other words, the coefficients of the monomials are \vn{real(dp)}. 
-  The complex objects of \secs{sec:complextaylor} and  \sece{sec:complex_8} are made of two real type \vn{taylor}  or  \vn{real_8}  respectively. The individual coefficients inside Berz' package \vn{c_dabnew.f90} are real.
+  The complex objects of \secs{sec:complextaylor} and  \sece{sec:complex_8} are made of two real  \vn{taylor}s  or  \vn{real_8}s  respectively. The individual coefficients inside Berz' package \vn{c_dabnew.f90} are real.
   
-  It turns out that this is very inconvenient in accelerator physics. when we analyze maps. Since most of our maps are stable, their diagonal form contain complex numbers. For example, the map  of \eq{eq:lin1} can be diagonalize 
+  It turns out that this is very inconvenient in accelerator physics  when we analyze maps. Since most of our maps are stable, their diagonalized representation contains complex numbers. For example, the map  of \eq{eq:lin1} can be diagonalize 
   into:
 %
 %]|Expr|[#b @`b___})8# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
@@ -772,21 +746,17 @@ In fact, the output  from the code, a \vn{c_damap},   is made of two \vn{c_taylo
 \begin{example}
            2  Dimensional map
 
-          1, NO =    1, NV =    2, INA =  139
+ Properties, NO =    1, NV =    2, INA =  139
  *********************************************
 
-    I  COEFFICIENT          ORDER   EXPONENTS
-      NO =     1      NV =     2
    1  0.9499999999999998     -0.3122498999199199       1  0
-    -1   0.000000000000000       0.000000000000000       0  0
 
-          1, NO =    1, NV =    2, INA =  138
+
+ Properties, NO =    1, NV =    2, INA =  138
  *********************************************
 
-    I  COEFFICIENT          ORDER   EXPONENTS
-      NO =     1      NV =     2
    1  0.9499999999999998      0.3122498999199199       0  1
-    -1   0.000000000000000       0.000000000000000       0  0
+
   No Spin Matrix
   c_quaternion is identity
  No Stochastic Radiation
@@ -841,16 +811,17 @@ and the \vn{c_quaternion} follows the polymorphic quaternion:
 END TYPE c_quaternion
       \end{example}
 
- It is important to realize that  $\vn{c_damap}$ can be concatenated.  For example, the diagonal matrix $\Lambda$ of \eq{eq:lam} was obtained with the Fortran statement:
+ It is important to realize that  $\vn{c_damap}$ can be concatenated.  For example, the diagonal matrix $\Lambda$ of \eq{eq:lam} was obtained with a  Fortran  statement which represents a similarity transformation where \vn{normal%atot} turns the original map into a rotation and \vn{c_phasor()} diagonalizes the rotation:
+ 
    \begin{example1}
  diag=c_phasor(-1)*normal%atot**(-1)*one_period_map*normal%atot*c_phasor()
    \end{example1}
 
-The Fortran symbol \vn{*} is overloaded to represent the ``differential algebraic''  (DA) concatenation of five maps in this example. Basically, when we deal with operators around a closed orbit, the operators form a self-consistent differential algebra. This will include all the complicated operators we will later define: vector fields, etc \ldots
+The Fortran symbol \vn{*} is overloaded to represent the ``differential algebraic''  (DA) concatenation of five maps in this example. When we deal with maps around a closed orbit, the maps and the various differential operators we will later discuss,  form a self-consistent differential algebra if the constant part is ignored. These complicated operators we will later define: Lie vector fields, etc \ldots
 
-Most of perturbation theory deals with differential algebraic operators. On the other hand, it is possible to concatenate \vn{c_damap} using truncated power series algebra (TPSA). In the case of TPSA, the constant part of a map is taken into account. In that case, the map concatenation uses the symbol ``\vn{.o.}''.
+Most of perturbation theory deals with differential algebraic operators. On the other hand, it is possible to concatenate \vn{c_damap} using truncated power series algebra (TPSA). In the case of TPSA, the constant part of a map is taken into account. In that case, the map concatenation uses the symbol ``\vn{.o.}''. As we alluded at the beginning of  \sec{sec:taymap}, it is sometimes preferable to use a single type for two different purposes: then an new operator must be defined.
 
-A tracking code like PTC produces TPSA maps if we do not compute it around  the closed orbit because of feed down issues.  Thus most calculations of lattice functions must be preceded by a computation of the closed orbit for the obtention of a self-consistent DA map. If the maps were of infinite or very large order, then we could always deal with TPSA maps and the closed orbit search would be part of the map analysis. 
+A tracking code like PTC produces TPSA maps if we do not compute them  around  the closed orbit because of feed down issues.  Thus most calculations of lattice functions must be preceded by a computation of the closed orbit for the obtention of  self-consistent results. If the maps were of infinite or very large order, then we could always deal with TPSA\footnote{This is view point of COSY INFINITY of Berz but we reject it in ring dynamics although its has its place in other area of beam physics.} maps and the closed orbit search would be part of the map analysis. 
 
 \newpage
 
@@ -913,8 +884,9 @@ The answer will become  obvious when we discuss analysis. When we track lattice 
 
 
 
-This concludes our overview of the major types: the various Taylor types, the polymorphs, the probes of PTC and the maps which can be concatenated and analyzed.
-\section{Operations on Taylor structures}
+This concludes our overview of the quintessential   types: the various Taylor types, the polymorphs, the probes of PTC and the maps which can be concatenated and analyzed.
+
+\section{Important types and their associated operators}\label{sec:typeops}
 
 
 \subsection{Obsolete Types} 

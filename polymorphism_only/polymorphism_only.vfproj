@@ -43,11 +43,7 @@
 		<File RelativePath="..\..\..\basic\n_complex_polymorph.f90"/>
 		<File RelativePath="..\..\..\basic\o_tree_element.f90"/>
 		<File RelativePath=".\z_my_code.f90">
-			<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true"/>
 			<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true"/></File>
-		<File RelativePath=".\z_why_polymorphism.f90"/>
-		<File RelativePath=".\z_why_polymorphism_c_damap.f90">
-			<FileConfiguration Name="Debug|Win32" ExcludedFromBuild="true"/>
-			<FileConfiguration Name="Release|Win32" ExcludedFromBuild="true"/></File></Filter>
+		<File RelativePath=".\z_why_polymorphism_c_damap.f90"/></Filter>
 		<File RelativePath=".\ReadMe.txt"/></Files>
 	<Globals/></VisualStudioProject>
