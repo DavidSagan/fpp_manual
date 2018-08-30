@@ -14,7 +14,7 @@ mypauses__genmod.f90
 *.pdb
 *.out
 *.toc
-
+*.log
 
 
 
