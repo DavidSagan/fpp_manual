@@ -12,6 +12,9 @@ mypause__genmod.f90
 mypauses__genmod.f90
 *.manifest
 *.pdb
+*.out
+*.toc
+
 
 
 
