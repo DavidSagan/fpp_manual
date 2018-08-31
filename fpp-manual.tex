@@ -49,14 +49,14 @@
   
 \begin{document}
  
-\maketitle
+
 
 \newpage 
 {\footnotesize
 \tableofcontents % the asterisk means that the contents itself isn't put into the ToC
 }
 \newpage 
-
+\maketitle
 %--------------------------------------------------------------
 \section{Introduction to FPP/PTC}
 \label{sec:fppptc}
@@ -605,7 +605,7 @@ end type quaternion_8
       
       The components of the \vn{probe} are all analogous to the components of the \vn{probe_8} with \vn{real_8} replaced by \vn{real(dp)}. This most operations are acting directly and quickly on Fortran intrinsic types.
       
- \subsection{The type {\vn{c_taylor}}  and the Taylor maps  {\vn{c_damap}}   for analysis}\label{sec:taymap}
+ \subsection{The type {\vn{c_taylor}}  and the Taylor maps  {\vn{c_damap}}   for analysis}\label{sec:raymap}
  
    PTC is an integrator  just like our little example of \sec{sec:real8code}. This little code  calls the tracking subroutine 
    \begin{code}
@@ -884,8 +884,13 @@ The answer will become  obvious when we discuss analysis. When we track lattice 
 
 This concludes our overview of the quintessential   types: the various Taylor types, the polymorphs, the probes of PTC and the maps which can be concatenated and analyzed.
 
-\section{Important types and their associated operators}\label{sec:typeops}
+\section{Important types and their  operators}\label{sec:typeops}
 
+Tracking codes  such as  PTC, BMAD, TEAPOT, Sixtrack, etc\ldots track particles via brute\footnote{From a certain point of view, symplectic integration is not so brute, but integration nevertheless. The reader is invited to read reference \cite{forestreview} for a complete discussion of the ``Talman'' view point of symplectic integration which the primary tool of PTC.} force integration. The tracking includes phase space and potentially other things such as spin. This is why PTC has a \vn{probe} entity so as to accommodate  anything ``trackable.''   The \vn{probe_8} was invented to accommodate Taylor series. For example, the phase space variables and the spin can be expanded as a Taylor series in some variables. For a  \vn{probe_8}, the extra information carried by the type \vn{probe_8} is passive like the spin. As we explained in \sec{sec:raymap},  \vn{probe_8} can be promoted to a {\it bona fide} Taylor approximation of the map of PTC.
+
+We will now assume that we have a proper map of the type \vn{c_damap}. This map has at least one degree of freedom and represents some dynamical system. We describe the types and the operations associated to \vn{c_damap}.
+
+%z_concat_da_c_damap.f90
 
 \subsection{Obsolete Types} 
 \section{overloading}\label{sec:over}
