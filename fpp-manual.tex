@@ -536,22 +536,20 @@ For example, if one tracks on the closed orbit, the initial conditions are
 \begin{align} s(1)&=\left({1,0,0}\right)\nonumber \\
  s(2)&=\left({0,1,0}\right)\nonumber \\
  s(3)&=\left({0,0,1}\right)\end{align}
-the end vectors will allow us to construct  the one-turn matrix around the closed orbit. Thus if the orbital polymorphs are powered to be appropriate Taylor series in n-d-f (n=1,2, or 3), we can produce a complete approximate map for the spin: this will be discussed later.
-
+the end vectors will allow us to construct  the one-turn matrix around the closed orbit.????? Thus if the orbital polymorphs are powered to be appropriate Taylor series in n-d-f (n=1,2, or 3), we can produce a complete approximate map for the spin: this will be discussed later.
 
 The polymorphic  quaternion \vn{quaternion_8}, not surprisingly, is given by: 
-  \begin{example}
- type  quaternion_8 
-  type(real_8) x(0:3)
-end type quaternion_8
-  \end{example}
+\begin{example}
+  type  quaternion_8 
+    type(real_8) x(0:3)
+  end type quaternion_8
+\end{example}
    
-As we will see, it is a more efficient representation for the spin and it simplifies the analysis. From the matrix, we know that there is one invariant unit direction and one angle of rotation around this axis. The unit quaternion has exactly the same freedom: four numbers whose squares add up to one. Once more we claim that if its polymorphic components are properly initialized, a generic Taylor map for the quaternions emerges.
+As we will see, it is a more efficient representation for the spin and it simplifies the analysis. From the matrix, we know that there is one invariant unit direction and one angle of rotation around this axis. The unit quaternion has exactly the same freedom: four numbers whose squares add up to one. Once more we claim that if its polymorphic components are properly initialized, a generic Taylor map for the quaternions emerges. ???????
    
 \subsubsection{The components of type rf_phasor_8}\label{sec:codemod}
   
-These objects are a little more complex to explain but their Fortran definition is simple:
-  
+The \vn{rf_phasor_8} type  are a somewhat complex to explain but their definition is simple:
 \begin{example}
   type rf_phasor_8
     type(real_8)  x(2)  ! The two hands of the clock
@@ -560,29 +558,26 @@ These objects are a little more complex to explain but their Fortran definition 
   end type rf_phasor_8
 \end{example}
     
-The variables \vn{x(2)} represents a vector rotating at frequency \vn{om} based on a pseudo-time related to the reference time of the ``design'' particle.   As the the \vn{probe_8} traverses a magnet, in the integration routines, magnets use that pseudo-clock to modulate their multipole components. In the end, as we will see, the components \vn{rf_phasor_8%x(2)} is used to add two additional dimensions to a Taylor map. This will be explained later when we discuss the types germane to analysis.
+The variables \vn{x(2)} represents a vector rotating at frequency \vn{om} based on a pseudo-time related to the reference time of the ``design'' particle. As the the \vn{probe_8} traverses a magnet, in the integration routines, magnets can use that pseudo-clock to modulate their multipole components. In the end, as we will see, the components \vn{rf_phasor_8%x(2)} are used to add two additional dimensions to a Taylor map. This will be explained later when we discuss the types germane to analysis.
     
 \subsubsection{The real components E_i_j(6,6)}\label{sec:codesto}
    
-We will say little about this except that allow us to store the quantum fluctuations due to radiation. PTC, like most codes, does not attempt to go beyond linear dynamics when dealing with photon fluctuations. When radiation is present, the polymorphs \vn{x(6)} contain the finally trajectory (with classical radiation) and   \vn{E_i_j(6,6)  } measures the fluctuations $<x_i\, x_j>\,i,j=1,6$ due to photon emission. PTC does not attempt any polymorphic computations: you get the zeroth order results around the orbit computed.
+We will say little about the \vn{E_i_j(6,6)} structure except that it allows us to store the quantum fluctuations due to radiation. PTC, like most codes, does not attempt to go beyond linear dynamics when dealing with photon fluctuations. When radiation is present, the polymorphs \vn{x(6)} contain the finally trajectory (with classical radiation) and   \vn{E_i_j(6,6)  } measures the fluctuations $<x_i\, x_j>\,i,j=1,6$ due to photon emission. PTC does not attempt any polymorphic computations: you get the zeroth order results around the orbit computed.
     
     
-\subsubsection{Real(dp) type   \protect\vn{probe}  specific to PTC}\label{sec:codetyper}
-      
-In theory it is possible to have a code which uses the polymorphs \vn{real_8} and nothing else. However this is not what PTC does. PTC has a    \vn{real(dp)} version as well as a\vn{real_8} embedded within itself. This is an issue of speed. 
-Consider the following Fortran statement
+\subsubsection{Real(dp) type probe specific to PTC}\label{sec:codetyper}
+
+In theory, it is possible to have a code which always uses the polymorphs \vn{real_8} and nothing else. However this is not what PTC does due to computational speed considerations. To see this
+consider the following code fragment
 \begin{code}
   type(real_8) a,b,c
       . 
       .
-      .
   c=a+b
-      .
-      .
 \end{code}
       
-How many internal questions does the \vn{+} operation requires?   First it must decide if \vn{a} is real, Taylor or knob?  The same thing applies to the polymorph \vn{b}. On the basis of the answer, it must branch of 9 possibilities before it can even start to compute this sum.   This overhead slows down a polymorphic calculation even if all the variables are real.  Therefore PTC has a type \vn{probe} defined as
-      
+How many internal questions does the \vn{+} operation requires?   First it must decide if \vn{a} is real, Taylor or knob?  The same thing applies to the polymorph \vn{b}. On the basis of the answer, it must branch of 9 possibilities before it can even start to compute this sum.   This overhead slows down a polymorphic calculation even if all the variables are real.
+To get around this, PTC has a type \vn{probe} defined as
 \begin{example}
   type probe
     real(dp) x(6)
@@ -594,12 +589,11 @@ How many internal questions does the \vn{+} operation requires?   First it must 
       .
   end type probe
 \end{example}
-      
-The components of the \vn{probe} are all analogous to the components of the \vn{probe_8} with \vn{real_8} replaced by \vn{real(dp)}. This most operations are acting directly and quickly on Fortran intrinsic types.
-      
-\subsection{The type c_taylor and the Taylor maps c_damap for analysis}\label{sec:taymap}
- 
-PTC is an integrator  just like our little example of \sec{sec:real8code}. This little code  calls the tracking subroutine 
+The components of the \vn{probe} are all analogous to the components of the \vn{probe_8} with \vn{real_8} replaced by \vn{real(dp)}. With this, most operations are acting directly and quickly on Fortran intrinsic types.
+
+The way PTC uses \vn{probe} and \vn{probe_8} is that for a given a PTC tracking routine that uses \vn{probe_8} there is a duplicate tracking routine that uses \vn{probe}. The \vn{probe_8} routine is to be used when tracking is to be done using Taylor maps and the \vn{probe} routine is to be used when tracking just with the ``central ray'' is desired. That is, \vn{probe} is equivalent to tracking setting the truncation order to 0.
+
+The same routine duplication happens with routines that use \vn{real_8}. In this case the corresponding routine will use a \vn{real(dp)}. As an example, consider the subroutine in the example of \sec{sec:real8code}:
 \begin{code}
   subroutine track(z)
   implicit none
@@ -609,7 +603,7 @@ PTC is an integrator  just like our little example of \sec{sec:real8code}. This 
   end subroutine track
 \end{code}
 
-This routines seems to compute the effect of a ``drift'' followed by a multipole ``kick'' in the jargon of accelerator physicists.  And indeed, if one substitutes it with 
+This routines computes the effect of a ``drift'' followed by a multipole ``kick'' in the jargon of accelerator physicists.  The corresponding \vn{real(dp)} version is:
 \begin{code}
   subroutine track(z)
   implicit none
@@ -620,8 +614,7 @@ This routines seems to compute the effect of a ``drift'' followed by a multipole
 \end{code}
 this is indeed a trivial  drift-kick routine.   
     
-It so happens that PTC tracks \vn{probe} or  \vn{probe_8}.  It is very easy to modify the above routines to reflect this fact. We insert them in a module which  uses the FPP
-module \vn{tree_element_module}  where  \vn{probe} or  \vn{probe_8} are defined:
+It so happens that PTC tracks \vn{probe} or  \vn{probe_8}.  It is very easy to modify the above routines to reflect this fact:
 \begin{code}
   module my_code
   use tree_element_module
@@ -659,19 +652,16 @@ module \vn{tree_element_module}  where  \vn{probe} or  \vn{probe_8} are defined:
           .
   end module my_code
 \end{code}
-    
-Then a call to \vn{track(p)} will either call 
-    
+
+Then a call to \vn{track(p)} will either call    
 \begin{itemize} 
   \item \vn{trackr(p)} if \vn{p} is a \vn{probe}
   \item or \vn{trackp(p)} if \vn{p} is a \vn{probe_8}
 \end{itemize}  
     
-If we call  \vn{track(p)}   where \vn{p} is a  \vn{probe_8}, then the resulting   \vn{p}   could be a Taylor series which approximates the true map\footnote{The true map of the code is always what you get by calling \vn{track}.} of the code.
+If we call  \vn{track(p)} where \vn{p} is a  \vn{probe_8}, then the resulting \vn{p} could be a Taylor series which approximates the true map\footnote{The true map of the code is always what you get by calling \vn{track}.} of the code.
     
-For example, in \sec{sec:real8code}, we got the following results for the final polymorphs: 
-    
-    
+For example, in \sec{sec:real8code}, we got the following results for the final polymorphs:
 \begin{example1}
  Properties, NO =    2, NV =    2, INA =   20
  *********************************************
@@ -712,8 +702,9 @@ Conversely we define a new operator when the creation of a new type would too cu
 This will now be explained in \sec{sec:typeops} where  we describe  the important types and associated operators.
 
 
-
-  \subsubsection{The type {\vn{c_taylor}} and the complex Berz's package }\label{sec:cdamap}
+\subsection{The type c_taylor and the Taylor maps c_damap for analysis}\label{sec:taymap}
+ 
+\subsubsection{The type {\vn{c_taylor}} and the complex Berz's package }\label{sec:cdamap}
   
   The reader will notice two seemingly identical Fortran files : \vn{c_dabnew.f90} and  \vn{cc_dabnew.f90}. The first package creates and manipulates real Taylor series. In other words, the coefficients of the monomials are \vn{real(dp)}. 
   The complex objects of \secs{sec:complextaylor} and  \sece{sec:complex_8} are made of two real  \vn{taylor}s  or  \vn{real_8}s  respectively. The individual coefficients inside Berz' package \vn{c_dabnew.f90} are real.
