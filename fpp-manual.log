@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.6.4)  30 AUG 2018 14:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6630 64-bit) (preloaded format=pdflatex 2018.6.4)  31 AUG 2018 12:01
 entering extended mode
 **./fpp-manual.tex
 (fpp-manual.tex
@@ -1285,341 +1285,160 @@ sty"
 Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
 )
 Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
-)
-LaTeX Font Info:    Try loading font information for U+msa on input line 53.
+) (fpp-manual.toc
+LaTeX Font Info:    Try loading font information for U+msa on input line 3.
 
 ("C:\Users\Etienne\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsfonts\umsa.fd
 "
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 53.
+LaTeX Font Info:    Try loading font information for U+msb on input line 3.
 
 ("C:\Users\Etienne\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsfonts\umsb.fd
 "
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1
-
-{C:/Users/Etienne/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-(fpp-manual.toc
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 8.
-
-("C:\Users\Etienne\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\t1cmtt.fd"
+)
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 10.
+ ("C:\Users\Etienne\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\t1cmtt.fd"
 File: t1cmtt.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 ))
 \tf@toc=\write5
 \openout5 = `fpp-manual.toc'.
 
- [2]
-<FPP-PTC.pdf, id=142, 182.6825pt x 108.57965pt>
+ [1
+
+{C:/Users/Etienne/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+<FPP-PTC.pdf, id=137, 182.6825pt x 108.57965pt>
 File: FPP-PTC.pdf Graphic file (type pdf)
 <use FPP-PTC.pdf>
 Package pdftex.def Info: FPP-PTC.pdf  used on input line 66.
-(pdftex.def)             Requested size: 182.68204pt x 108.57936pt.
- [3 <./FPP-PTC.pdf>]
+(pdftex.def)             Requested size: 289.07999pt x 171.84221pt.
+
+[2]
 Overfull \hbox (8.08766pt too wide) in paragraph at lines 90--91
 []\T1/cmr/m/n/12 FPP/PTC uses dou-ble pre-ci-sion real num-bers de-fined us-ing
  the type "real(dp)"
  []
 
+[3 <./FPP-PTC.pdf>]
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 114.
+
 
 ("C:\Users\Etienne\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <8> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 114.
-[4] [5] [6] [7]
+[4] [5] [6] [7] [8]
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 249.
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 317.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\begingroup' on input line 249.
+(hyperref)                removing `\begingroup' on input line 317.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 249.
+(hyperref)                removing `\catcode' on input line 317.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 249.
+(hyperref)                removing `\catcode' on input line 317.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\endgroup' on input line 249.
+(hyperref)                removing `\endgroup' on input line 317.
 
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\begingroup' on input line 259.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 259.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 259.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\endgroup' on input line 259.
-
-[8]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\begingroup' on input line 318.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 318.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 318.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\endgroup' on input line 318.
-
-[9]
-Overfull \hbox (1.73218pt too wide) in paragraph at lines 323--324
-[]\T1/cmr/m/n/12 But what if we want to in-clude some pa-ram-e-ters, such as qu
-adrupole strengths
- []
-
-[10] [11]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\begingroup' on input line 449.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 449.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 449.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\endgroup' on input line 449.
-
-[12]
-LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 466.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\begingroup' on input line 466.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 466.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 466.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\endgroup' on input line 466.
-
-[13]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\begingroup' on input line 492.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 492.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 492.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\endgroup' on input line 492.
-
+[9] [10] [11] [12]
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 497.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 491.
+
 
 Package amsmath Warning: Foreign command \over;
 (amsmath)                \frac or \genfrac should be used instead
-(amsmath)                 on input line 504.
+(amsmath)                 on input line 498.
+
+[13] [14] [15] [16] [17] [18]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\begingroup' on input line 708.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\begingroup' on input line 525.
+(hyperref)                removing `\catcode' on input line 708.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 525.
+(hyperref)                removing `\catcode' on input line 708.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 525.
+(hyperref)                removing `\endgroup' on input line 708.
+
+[19]
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\begingroup' on input line 749.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\endgroup' on input line 525.
-
-[14]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\begingroup' on input line 558.
+(hyperref)                removing `\catcode' on input line 749.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 558.
+(hyperref)                removing `\catcode' on input line 749.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 558.
+(hyperref)                removing `\endgroup' on input line 749.
 
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\endgroup' on input line 558.
-
-[15]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\begingroup' on input line 572.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 572.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 572.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\endgroup' on input line 572.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\begingroup' on input line 577.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 577.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 577.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\endgroup' on input line 577.
-
-[16]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\begingroup' on input line 608.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 608.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 608.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\endgroup' on input line 608.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\begingroup' on input line 608.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 608.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 608.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\endgroup' on input line 608.
-
-[17] [18] [19]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\begingroup' on input line 726.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 726.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 726.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\endgroup' on input line 726.
-
-[20]
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\begingroup' on input line 767.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 767.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\catcode' on input line 767.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\endgroup' on input line 767.
-
-[21] [22]
-Overfull \hbox (7.75575pt too wide) in paragraph at lines 828--829
+[20] [21]
+Overfull \hbox (7.75575pt too wide) in paragraph at lines 811--812
 \T1/cmr/m/n/12 Let us as-sume that we want to com-pute a \T1/cmtt/m/n/12 probe_
 8\T1/cmr/m/n/12 , called \T1/cmtt/m/n/12 polymorphic_probe\T1/cmr/m/n/12 ,
  []
 
 
-Overfull \hbox (2.60765pt too wide) in paragraph at lines 837--838
+Overfull \hbox (2.60765pt too wide) in paragraph at lines 820--821
 [][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[23]
-Overfull \hbox (24.3092pt too wide) in paragraph at lines 861--863
+[22]
+Overfull \hbox (24.3092pt too wide) in paragraph at lines 844--846
 []\T1/cmr/m/n/12 Finally, once the track-ing is done, it re-turns the fi-nal va
 lue of \T1/cmtt/m/n/12 polymorphic_probe\T1/cmr/m/n/12 .
  []
 
+[23]
+
+LaTeX Warning: Citation `forestreview' on page 24 undefined on input line 893.
+
 [24]
 No file fpp-manual.bbl.
 [25]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 896.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 896.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 905.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 905.
  (fpp-manual.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 896.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 896.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 905.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 905.
 Package rerunfilecheck Info: File `fpp-manual.out' has not changed.
-(rerunfilecheck)             Checksum: FB03BD84850E90BBF1F9FF8CB3D18A85;2237.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 896.
+(rerunfilecheck)             Checksum: ADE8B910B7FFAAF41F8F27527375FEA3;1990.
+
+
+LaTeX Warning: There were undefined references.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 905.
  ) 
 Here is how much of TeX's memory you used:
- 30225 strings out of 493305
- 710231 string characters out of 3128933
- 901377 words of memory out of 3000000
- 32983 multiletter control sequences out of 15000+200000
- 25977 words of font info for 74 fonts, out of 3000000 for 9000
+ 30226 strings out of 493305
+ 710223 string characters out of 3128933
+ 893372 words of memory out of 3000000
+ 32986 multiletter control sequences out of 15000+200000
+ 26348 words of font info for 74 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 69i,16n,98p,1005b,1768s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 69i,16n,98p,1005b,1772s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\Etienne\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi60
-0\ectt1440.pk> <C:\Users\Etienne\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknap
+0\ecti1200.pk> <C:\Users\Etienne\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknap
 pen\ec\dpi600\ectt0800.pk> <C:\Users\Etienne\AppData\Local\MiKTeX\2.9\fonts\pk\
 ljfour\jknappen\ec\dpi600\ecbx1200.pk> <C:\Users\Etienne\AppData\Local\MiKTeX\2
 .9\fonts\pk\ljfour\jknappen\ec\dpi600\ectt1200.pk> <C:\Users\Etienne\AppData\Lo
@@ -1628,13 +1447,13 @@ e\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0700.pk> <C:\
 Users\Etienne\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm0
 800.pk> <C:\Users\Etienne\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\
 dpi600\ecbx1440.pk> <C:\Users\Etienne\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\
-jknappen\ec\dpi600\ectt1000.pk> <C:\Users\Etienne\AppData\Local\MiKTeX\2.9\font
-s\pk\ljfour\jknappen\ec\dpi600\ecrm1000.pk> <C:\Users\Etienne\AppData\Local\MiK
-TeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1000.pk> <C:\Users\Etienne\AppDa
-ta\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1728.pk> <C:\Users\E
-tienne\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1200.pk>
+jknappen\ec\dpi600\ecrm1440.pk> <C:\Users\Etienne\AppData\Local\MiKTeX\2.9\font
+s\pk\ljfour\jknappen\ec\dpi600\ecrm1200.pk> <C:\Users\Etienne\AppData\Local\MiK
+TeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ectt1000.pk> <C:\Users\Etienne\AppDa
+ta\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecrm1000.pk> <C:\Users\E
+tienne\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\ecbx1000.pk>
  <C:\Users\Etienne\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\
-ecrm1440.pk><C:/Users/Etienne/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pub
+ecbx1728.pk><C:/Users/Etienne/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pub
 lic/amsfonts/cm/cmbx12.pfb><C:/Users/Etienne/AppData/Local/Programs/MiKTeX 2.9/
 fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/Etienne/AppData/Local/Progr
 ams/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/Etienne/AppD
@@ -1645,9 +1464,9 @@ sfonts/cm/cmr8.pfb><C:/Users/Etienne/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
 pe1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Etienne/AppData/Local/Programs/MiKT
 eX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/Etienne/AppData/Local
 /Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on fpp-manual.pdf (25 pages, 1813220 bytes).
+Output written on fpp-manual.pdf (25 pages, 1818261 bytes).
 PDF statistics:
- 2767 PDF objects out of 2984 (max. 8388607)
- 247 named destinations out of 1000 (max. 500000)
+ 2768 PDF objects out of 2984 (max. 8388607)
+ 245 named destinations out of 1000 (max. 500000)
  210 words of extra memory for PDF output out of 10000 (max. 10000000)
 
