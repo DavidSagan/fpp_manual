@@ -77,7 +77,7 @@ FPP/PTC is an object oriented, open source, subroutine library for
 \item Modeling of charged particle beams in accelerators using Taylor maps.
 \end{enumerate}
 
-FPP/PTC has two parts. The Fully Polymorphic Package (FPP) is the part that deals with Taylor series and maps. FPP is pure math independent\footnote{It does not contain any physical description of what an accelerator is. } of any "physics". The Polymorphic Tracking Code (PTC) part of the library deals with the modeling of particle beams and accelerators. PTC contains the "physics" and relies on FPP for producing and manipulating Taylor maps. This is illustrated in \Fig{f:fpp-ptc}. Roughly, FPP can be subdivided into two parts(see \sec{sec:subp}), a Taylor manipulation part for basic manipulations of Taylor series and an analysis part to do things like normal form analysis. PTC uses the Taylor manipulation part of FPP for things like the construction of Taylor maps. Additionally, PTC uses the analysis tools of FPP. A closer look at FPP shows the existence of a Differential Algebra (DA) package within FPP. This package was originally coded by Martin Berz.
+FPP/PTC has two parts. The Fully Polymorphic Package (FPP) is the part that deals with Taylor series and maps. FPP is pure math independent\footnote{It does not contain any physical description of what an accelerator is. } of any "physics". The Polymorphic Tracking Code (PTC) part of the library deals with the modeling of particle beams and accelerators. PTC contains the "physics" and relies on FPP for producing and manipulating Taylor maps. This is illustrated in \Fig{f:fpp-ptc}. Roughly, FPP can be subdivided into two parts(see \sec{sec:subp}), a Taylor manipulation part for basic manipulations of Taylor series and an analysis part to do things like normal form analysis. PTC uses the Taylor manipulation part of FPP for things like the construction of Taylor maps. Additionally, PTC uses the analysis tools of FPP. A closer look at FPP shows the existence of a Differential Algebra (DA) package\footnote{Should really be called the TPSA package of Berz. We will demystify this jargon latter.} within FPP. This package was originally coded by Martin Berz.
 
 %--------------------------------------------------------------
 \subsection{Where to Obtain FPP/PTC}
@@ -317,9 +317,9 @@ The variable \vn{z1} is, in Leibnitz  mathematical  language, $dx+i \, dy$. The 
 \subsubsection{Type \protect\vn{real_8}}  \label{sec:real8code}
 
 The \vn{real_8} type was discussed in Sec.~\sref{s:concepts} and Sec.~\sref{sec:real8}.
-This type is the most important type if you write a tracking code of respectable length.  Imagine that your code tracks in one degrees of freedom (1-d-f). Then you will push two phase space variables through your magnets, let us call them ${\bf z}=(z_1,z_2)$. These variables will denote  the position and the tangent of an angle in our little example.  If it is our  intention to always extract a Taylor series around a special orbit, then  it would suffice to declare as \vn{taylor} only the phase space variables ${\bf z}=(z_1,z_2)$ and any temporary variables the code might used during its calculations. 
+This type is the most important type if you write a tracking code of respectable length.  Imagine that your code tracks in one degree of freedom (1-d-f). Then you will push two phase space variables through your magnets, let us call them ${\bf z}=(z_1,z_2)$. These variables will denote  the position and the tangent of an angle in our little example.  If it is your  intention to always extract a Taylor series around a special orbit, then  it would suffice to declare as \vn{taylor} only the phase space variables ${\bf z}=(z_1,z_2)$ and any temporary variables the code might used during its calculations. 
 
-But what if we want to have a Taylor map that also depends upon some paramter or parameters of the lattice. For example, a map that included quadrupole strengths as independent variables in the maps. Such variables are called ``\vn{knobs}. Since this is a user decision, it is best if the code decides at execution time using the type \vn{real_8}.
+But what if we want to have a Taylor map that also depends upon some parameter or parameters of the lattice. For example, a map can include quadrupole strengths as independent variables in the maps. Such variables are called ``\vn{knobs}.'' Since this is a user decision, it is best if the code decides at execution time using the type \vn{real_8}.
 As an example, consider the code:
 
 \begin{code}
@@ -447,7 +447,7 @@ So in summary a \vn{real_8} polymorph can be as mentioned in \sec{sec:real8}:
 
 The type \vn{complex_8} is the polymorphic version of the \vn{complextaylor} type just as the \vn{real_8} type is the polymorphic version of the \vn{taylor} type.
 
-The type \vn{complex_8} is rarely used in a tracking code since all quantities we compute are ultimately real. However once in a while it is useful to go into complex coordinates temporarily. If the type \vn{complex_8} did not exist, then a code could become extremely difficult to write. This happens a lot when Maxwell's equation is written in cylindrical coordinates. In such a case, if ${\bf z}=(x,p_x,y,p_y)$, then most intermediate calculations involve a quantity $q=x+i\,y$. It in such a case, the complex polymorph is useful. This happens in the tracking code for some magnets in PTC but it is generally hidden from a normal programmer using PTC. 
+The type \vn{complex_8} is rarely used in a tracking code since all quantities we compute are ultimately real. However once in a while it is useful to go into complex coordinates temporarily. If the type \vn{complex_8} did not exist, then a code could become extremely difficult to write. This happens a lot when Maxwell's equations are  written in cylindrical coordinates. In such a case, if ${\bf z}=(x,p_x,y,p_y)$, then most intermediate calculations involve a quantity $q=x+i\,y$. It in such a case, the complex polymorph is useful. This happens in the tracking code for some magnets in PTC but it is generally hidden from a normal programmer using PTC. 
  
 \begin{example1}
   TYPE COMPLEX_8
@@ -464,23 +464,26 @@ The type \vn{complex_8} is rarely used in a tracking code since all quantities w
   
   \subsection{Type probe_8 specific to PTC}\label{sec:codetype}
 
-The types discussed in \sec{sec:funtype} are useful to anyone who decides to use FPP to write their own tracking code. In fact there is nothing ``tracking'' about these types. Once could write a code to solve a problem in finance or biology using  type \vn{real_8}. But since our ultimate goal is to describe the analysis part of FPP, we need to say a little bit more about the objects used in PTC.
+The types discussed in \sec{sec:funtype} are useful to anyone who decides to use FPP to write their own tracking code. In fact there is nothing ``tracking'' about these types. One could write a code to solve a problem in finance or biology using  type \vn{real_8}. But since our ultimate goal is to describe the analysis part of FPP, we need to say a little bit more about the objects used in PTC.
 
-The PTC uses the following \vn{probe_8}structure for tracking 
-\begin{example}
-  type probe_8
-    type(real_8) x(6)     ! Polymorphic orbital ray
-    type(spinor_8) s(3)   ! Polymorphic spin s(1:3)
-    type(quaternion_8) q 
-    type(rf_phasor_8)  ac(nacmax)  ! Modulation of magnet
-    integer:: nac=0 !  number of modulated clocks <=nacmax
-    real(dp) E_ij(6,6)   !  Envelope for stochastic radiation
+ PTC uses the following \vn{probe_8} structure for tracking 
+
+\begin{example1}
+type probe_8
+   type(real_8) x(6)     ! Polymorphic orbital ray
+   type(spinor_8) s(3)   ! Polymorphic spin s(1:3)
+   type(quaternion_8) q
+   type(rf_phasor_8)  ac(nacmax)  ! Modulation of magnet
+   integer:: nac=0 !  number of modulated clocks <=nacmax
+   real(dp) E_ij(6,6)   !  Envelope for stochastic radiation
+   real(dp) x0(6) ! initial value of the ray for TPSA calculations with c_damap
           .
           .
-  end type probe_8
-\end{example}
+          .
+end type probe_8
+\end{example1}
 
-As the reader can see, it is made out of other structures which are themselves made of \vn{real_8} or simple real numbers These components are described below.
+As the reader can see, it is made out of other structures which are themselves made of \vn{real_8} or simple real numbers These components are described later.
 
 %-------------------------------
 \subsubsection{The x(6) component of probe_8}\label{sec:codetypex6}
@@ -519,7 +522,7 @@ With 1-d-f tracking, only the first two phase space coordinates are used. With 2
 \subsubsection{The spin and quaternion components of probe_8}\label{sec:code spin}
 
 PTC can track spin. There are two ways to track spin: one method uses a regular spin matrix and the other uses a quaternion.
-Since there are three independent direction of spin, PTC tracks three directions: this saves time if one wants to construct a spin matrix. The three directions are represented by the three \vn{s(3)} components which are of type \vn{spinor_8}. The components of a \vn{spinor_8} is just
+Since there are three independent directions of spin, PTC tracks three directions: this saves time if one wants to construct a spin matrix. The three directions are represented by the three \vn{s(3)} components which are of type \vn{spinor_8}. The components of a \vn{spinor_8} are
 
 \begin{example}
   type spinor_8
@@ -536,7 +539,8 @@ For example, if one tracks on the closed orbit, the initial conditions are
 \begin{align} s(1)&=\left({1,0,0}\right)\nonumber \\
  s(2)&=\left({0,1,0}\right)\nonumber \\
  s(3)&=\left({0,0,1}\right)\end{align}
-the tracking of these vectors for one turn will allow us to construct  the one-turn spin matrix around the closed orbit. Thus if the orbital polymorphs are powered to be appropriate Taylor series in n-d-f (n=1,2, or 3), we can produce a complete approximate 3 by 3 matrix  for the spin. This is shown in \sec{sec:mappro}.
+ 
+The tracking of these vectors for one turn will allow us to construct  the one-turn spin matrix around the closed orbit. Thus if the orbital polymorphs are powered to be appropriate Taylor series in n-d-f (n=1,2, or 3), we can produce a complete approximate 3 by 3 matrix  for the spin. This is shown in \sec{sec:mappro}.
 
 The polymorphic  quaternion \vn{quaternion_8}, not surprisingly, is given by: 
 \begin{example}
@@ -545,11 +549,12 @@ The polymorphic  quaternion \vn{quaternion_8}, not surprisingly, is given by:
   end type quaternion_8
 \end{example}
    
-As we will see, it is a more efficient representation for the spin and it simplifies the analysis. From the theory of rotations in three dimensions, we know that there is one invariant unit direction and one angle of rotation around this axis. The unit quaternion has exactly the same freedom: four numbers whose squares add up to one. Once more we claim that if its polymorphic components are properly initialized, a generic Taylor map for the quaternions emerges. This is also shown in \sec{sec:mappro}.
+As we will see, it is a more efficient representation for the spin and it simplifies the analysis. From the theory of rotations in three dimensions, we know that there is one invariant unit direction and one angle of rotation around this axis. The unit quaternion has exactly the same freedom: four numbers whose squares add up to one. Once more we claim that if its polymorphic components are properly initialized, a generic Taylor map for the quaternions emerges. This is described in \sec{sec:mappro}.
    
 \subsubsection{The components of type rf_phasor_8}\label{sec:codemod}
   
-The \vn{rf_phasor_8} type  are a somewhat complex to explain but their definition is simple:
+The \vn{rf_phasor_8} type  is  somewhat complex to explain but their definition is simple:
+
 \begin{example}
   type rf_phasor_8
     type(real_8)  x(2)  ! The two hands of the clock
@@ -558,11 +563,11 @@ The \vn{rf_phasor_8} type  are a somewhat complex to explain but their definitio
   end type rf_phasor_8
 \end{example}
     
-The variables \vn{x(2)} represents a vector rotating at frequency \vn{om} based on a pseudo-time related to the reference time of the ``design'' particle. As the the \vn{probe_8} traverses a magnet, in the integration routines, magnets can use that pseudo-clock to modulate their multipole components. In the end, as we will see, the components \vn{rf_phasor_8%x(2)} are used to add two additional dimensions to a Taylor map. This will be explained later when we discuss the types germane to analysis.
+The variables \vn{x(2)} represents a vector rotating at a frequency \vn{om} based on a pseudo-time related to the reference time of the ``design'' particle. As the the \vn{probe_8} traverses a magnet, in the integration routines, magnets can use that pseudo-clock to modulate their multipole components. In the end, as we will see, the components \vn{rf_phasor_8%x(2)} are used to add two additional dimensions to a Taylor map. This will be explained later when we discuss the types germane to analysis.
     
 \subsubsection{The real components E_i_j(6,6)}\label{sec:codesto}
    
-We will say little about the \vn{E_i_j(6,6)} structure except that it allows us to store the quantum fluctuations due to radiation. PTC, like most codes, does not attempt to go beyond linear dynamics when dealing with photon fluctuations. When radiation is present, the polymorphs \vn{x(6)} contain the finally trajectory (with classical radiation) and   \vn{E_i_j(6,6)  } measures the fluctuations $<x_i\, x_j>\,i,j=1,6$ due to photon emission. PTC does not attempt any polymorphic computations: you get the zeroth order results around the orbit computed.
+We will say little about the \vn{E_i_j(6,6)} structure except that it allows us to store the quantum fluctuations due to radiation. PTC, like most codes, does not attempt to go beyond linear dynamics when dealing with photon fluctuations. When radiation is present, the polymorphs \vn{x(6)} contain the final closed trajectory (with classical radiation) and   \vn{E_i_j(6,6)  } measures the fluctuations $<x_i\, x_j>\,i,j=1,6$ due to photon emission. PTC does not attempt any polymorphic computations: you get the zeroth order results around the orbit computed.
     
     
 \subsubsection{Real(dp) type probe specific to PTC}\label{sec:codetyper}
@@ -576,7 +581,7 @@ consider the following code fragment
   c=a+b
 \end{code}
       
-How many internal questions does the \vn{+} operation requires?   First it must decide if \vn{a} is real, Taylor or knob?  The same thing applies to the polymorph \vn{b}. On the basis of the answer, it must branch of 9 possibilities before it can even start to compute this sum.   This overhead slows down a polymorphic calculation even if all the variables are real.
+How many internal questions does the \vn{+} operation requires?   First it must decide if \vn{a} is real, Taylor or knob?  The same thing applies to the polymorph \vn{b}. On the basis of the answer, it must branch into  9 possibilities before it can even start to compute this sum.   This overhead slows down a polymorphic calculation even if all the variables are real.
 To get around this, PTC has a type \vn{probe} defined as
 \begin{example}
   type probe
@@ -591,7 +596,7 @@ To get around this, PTC has a type \vn{probe} defined as
 \end{example}
 The components of the \vn{probe} are all analogous to the components of the \vn{probe_8} with \vn{real_8} replaced by \vn{real(dp)}. With this, most operations are acting directly and quickly on Fortran intrinsic types.
 
-The way PTC uses \vn{probe} and \vn{probe_8} is that for a given a PTC tracking routine that uses \vn{probe_8} there is a duplicate tracking routine that uses \vn{probe}. The \vn{probe_8} routine is to be used when tracking is to be done using Taylor maps and the \vn{probe} routine is to be used when tracking just with the ``central ray'' is desired. That is, \vn{probe} is equivalent to tracking setting the truncation order to 0.
+The way PTC uses \vn{probe} and \vn{probe_8} is that for a given a PTC tracking routine that uses \vn{probe_8} there is a duplicate tracking routine that uses \vn{probe}. The \vn{probe_8} routine is to be used when tracking is to be done using Taylor maps and the \vn{probe} routine is to be used for tracking ordinary real rays. \vn{Probe} is equivalent to tracking \vn{probe_8} setting the truncation order to 0.
 
 The same routine duplication happens with routines that use \vn{real_8}. In this case the corresponding routine will use a \vn{real(dp)}. As an example, consider the subroutine in the example of \sec{sec:real8code}:
 \begin{code}
@@ -615,7 +620,8 @@ This routines computes the effect of a ``drift'' followed by a multipole ``kick'
 this is indeed a trivial  drift-kick routine.   
  
     
-It so happens that PTC tracks \vn{probe} or  \vn{probe_8}.  It is very easy to modify the above routines to reflect this fact:
+As we said, PTC tracks \vn{probe} or  \vn{probe_8}.  It is very easy to modify the above routines to mimic this feature of PTC:
+
 \begin{code}
   module my_code
   use tree_element_module
@@ -687,7 +693,7 @@ It is clear that one could deduce from the above result:
 \begin{align} {\bf z}&=\left({\begin{array}{cc}1&1\\
 -0.1&0.9\end{array}}\right)\left({\begin{array}{c} {z}_{1} \cr {z}_{2} \end{array}}\right)+\ O\left({\begin{array}{c}{z}^{2}\end{array}}\right) \label{eq:lin1}\end{align}
 
-Therefore we could say that ${\bf z}$ or equivalently a \vn{probe_8} containing the same information is a Taylor map. But this is not done in PTC for several reasons:
+Therefore we could say that ${\bf z}$ or equivalently a \vn{probe_8}  is a ``Taylor map.''  But this is not done in PTC for several reasons:
 
 \begin{enumerate}
 \item The variables  $(z_1,z_2)$ could  be  infinitesimal with respect to machine parameters, in which case any attempt to concatenate the matrix is pure nonsense 
@@ -698,9 +704,7 @@ Item \ref{item:st} requires an explanation. Take for example  a pair of real num
 
 If the object in FPP is extremely important, the solution in FPP is to define  a new type and  keep the $+,*,\ldots $ signs for this new type.  Therefore we do not allow the concatenation of \vn{probe_8} even when it is reasonable. Instead we construct a map, type \vn{c_damap} described in \sec{sec:cdamap}, only and only if this construction is meaningful.  FPP does not prevent the construction of meaningless Taylor maps. The \vn{c_damap}  of PTC will be meaningful if the rules between the \vn{probe_8} and \vn{c_damap}  types are religiously\footnote{Neither FPP, nor PTC nor  BMAD prevents  a user to do crazy things and shove a  \vn{probe_8} into a \vn{c_damap}  anyway he sees fit. But beware of the results.}  observed.  
 
-Conversely we define a new operator when the creation of a new type would too cumbersome due to its infrequent usage.
-
-This will now be explained in \sec{sec:typeops} where  we describe  the important types and associated operators.
+Conversely we define a new operator when the creation of a new type is too cumbersome due to its infrequent usage. We do this on \vn{c_damap} allowing ``DA'' concatenation and ``TPSA'' concatenation via a different symbol rather than a different type. This will  be explained in \sec{sec:typeops}.
 
 
 \subsection{The type c_taylor and the Taylor maps c_damap for analysis}\label{sec:raymap}
@@ -756,6 +760,8 @@ Finally if FPP were to be used in electron microscopy, the eigenfunctions of $L_
    type(c_spinmatrix) s 
    type(c_quaternion) q
    complex(dp) e_ij(6,6) 
+   complex(dp) x0(lnv) 
+   logical :: tpsa=.false.
  end type c_damap
   \end{example}
 
@@ -800,7 +806,7 @@ END TYPE c_quaternion
 
 The Fortran symbol \vn{*} is overloaded to represent the ``differential algebraic''  (DA) concatenation of five maps in this example. When we deal with maps around a closed orbit, the maps and the various differential operators we will later discuss,  form a self-consistent differential algebra if the constant part is ignored. These complicated operators we will later define: Lie vector fields, etc \ldots
 
-Most of perturbation theory deals with differential algebraic operators. On the other hand, it is possible to concatenate \vn{c_damap} using truncated power series algebra (TPSA). In the case of TPSA, the constant part of a map is taken into account. In that case, the map concatenation uses the symbol ``\vn{.o.}''. As we alluded at the beginning of  \sec{sec:raymap}, it is sometimes preferable to use a single type for two different purposes: then an new operator must be defined.
+Most of perturbation theory deals with differential algebraic operators. On the other hand, it is possible to concatenate \vn{c_damap} using truncated power series algebra (TPSA). In the case of TPSA, the constant part of a map is taken into account. In that case, the map concatenation uses the symbol ``\vn{.o.}''. As we alluded at the beginning of  \sec{sec:raymap}, it is sometimes preferable to use a single type for two different purposes: then a new operator must be defined. The component \vn{x0(lnv)} and \vn{tpsa} are related to the TPSA usage of \vn{c_damap} and will be explained later.
 
 A tracking code like PTC produces TPSA maps if we do not compute them  around  the closed orbit because of feed down issues.  Thus most calculations of lattice functions must be preceded by a computation of the closed orbit for the obtention of  self-consistent results. If the maps were of infinite or very large order, then we could always deal with TPSA\footnote{This is view point of COSY INFINITY of Berz but we reject it in ring dynamics although its has its place in other area of beam physics.} maps and the closed orbit search would be part of the map analysis. 
 
@@ -861,7 +867,7 @@ Then  \vn{probe0} is ``added'' to \vn{Identity} and the appropriate  \vn{probe_8
 
 
 The answer will become  obvious when we discuss analysis. When we track lattice functions, linear, nonlinear, with or without spin, the initial value involves a canonical transformation. For example, \vn{Identity} would be replaced by 
-\vn{normal%atot}.
+\vn{normal%atot}. A map like \vn{normal%atot} if it is nonlinear or parameter dependent is a huge beast. But even in a coupled linear system in 2-d-f,  \vn{normal%atot}  involves 16 values. It makes perfect sense to allow its addition to a \vn{probe} to create the appropriate \vn{probe_8} to track.
 
 We are left with spin: how is spin transferred from the \vn{probe_8} to a  \vn{c_damap}.  This  depends on the choice : quaternions versus 3 by 3  rotations. In the case of a rotation, the following code fragments 
  gives us the answer:
@@ -895,6 +901,543 @@ Tracking codes  such as  PTC, BMAD, TEAPOT, Sixtrack, etc\ldots track particles 
 We will now assume that we have a proper map of the type \vn{c_damap}. This map has at least one degree of freedom and represents some dynamical system. We describe the types and the operations associated to \vn{c_damap}.
 
 %z_concat_da_c_damap.f90
+\subsection{TPSA? DA? What does that mean?} \label{sec:tpsada}
+
+TPSA stands for ``Truncated Power Series Algebra'' and DA stands for ``Differential Algebra.'' But what does it mean when applied to a typical accelerator ring? Once we cut the mathematical jargon, we will see that 
+
+\begin{itemize}
+\item DA operations are used around the closed orbit and thus the constant part of the map is ignored. All the coefficients of the Taylor series stay the same independently of the order invoked. It so happens that the computation of nonlinear differential operators (Lie vector fields for example), are self-consistent because they form a differential algebra. But it is much simpler in our field to state that they are self-consistent because there are no feed down terms.
+\item TPSA operations take into account the constant part and the results change as a function of the order. 
+\end{itemize}
+
+
+Let us look at our little code again  %z_concat_da_c_damap.f90
+\begin{code}
+  subroutine track(z)
+  implicit none
+  type(real_8) :: z(2) 
+  z(1)=z(1)+L*z(2) 
+  z(2)=z(2)-B-K_q*z(1)-K_s*z(1)**2 
+  end subroutine track
+\end{code}
+
+%\pagebreak
+with the parameters
+
+\begin{example}
+1     ! L
+0.001 ! B
+.1    ! K_q
+1.0   ! K_s
+\end{example}
+
+We run the code and invoke DA maps:
+
+\begin{example}
+ L
+   1.00000000000000
+ K_b
+  1.000000000000000E-003
+ K_q
+  0.100000000000000
+ K_s
+   1.00000000000000
+ Lattice Read and polymorphs read
+ closed orbit found
+  Closed Orbit from Tracking -1.127016653792583E-002  9.951207934035656E-020
+ The order of the Taylor series ?
+1
+ Tpsa =0 DA=1
+1
+
+           2  Dimensional map
+
+ Properties, NO =    1, NV =    2, INA =  154
+ *********************************************
+
+   0 -0.1127016653792583E-01   0.000000000000000       0  0
+   1   1.000000000000000       0.000000000000000       1  0
+   1   1.000000000000000       0.000000000000000       0  1
+
+
+ Properties, NO =    1, NV =    2, INA =  153
+ *********************************************
+
+   0 -0.1084202172485504E-18   0.000000000000000       0  0
+   1 -0.7745966692414835E-01   0.000000000000000       1  0
+   1  0.9225403330758517       0.000000000000000       0  1
+\end{example}
+
+The initial closed orbit is computed exactly by a Newton search and we compute the map around it. Notice that the DA map, type \vn{c_damap}, contains  the correct closed orbit. But it is most important to realize that the Taylor coefficients of the map are the correct ones: there is now feed down effect. If we run the same program to second order, we get:
+
+\begin{example}
+           2  Dimensional map
+
+ Properties, NO =    2, NV =    2, INA =  155
+ *********************************************
+
+   0 -0.1127016653792583E-01   0.000000000000000       0  0
+   1   1.000000000000000       0.000000000000000       1  0
+   1   1.000000000000000       0.000000000000000       0  1
+
+
+ Properties, NO =    2, NV =    2, INA =  154
+ *********************************************
+
+   0 -0.1084202172485504E-18   0.000000000000000       0  0
+   1 -0.7745966692414835E-01   0.000000000000000       1  0
+   1  0.9225403330758517       0.000000000000000       0  1
+   2  -1.000000000000000       0.000000000000000       2  0
+   2  -2.000000000000000       0.000000000000000       1  1
+   2  -1.000000000000000       0.000000000000000       0  2
+\end{example}
+
+Moreover, we can square the map and call the tracking code for an additional turn:
+
+\begin{example2}
+  one_period_map*one_period_map
+
+           2  Dimensional map
+
+ Properties, NO =    2, NV =    2, INA =   64
+ *********************************************
+
+   0 -0.1127016653792583E-01   0.000000000000000       0  0
+   1  0.9225403330758517       0.000000000000000       1  0
+   1   1.922540333075852       0.000000000000000       0  1
+   2  -1.000000000000000       0.000000000000000       2  0
+   2  -2.000000000000000       0.000000000000000       1  1
+   2  -1.000000000000000       0.000000000000000       0  2
+
+
+ Properties, NO =    2, NV =    2, INA =   63
+ *********************************************
+
+   0 -0.1084202172485504E-18   0.000000000000000       0  0
+   1 -0.1489193338482967       0.000000000000000       1  0
+   1  0.7736209992275551       0.000000000000000       0  1
+   2  -1.773620999227555       0.000000000000000       2  0
+   2  -5.392322664606813       0.000000000000000       1  1
+   2  -4.618701665379258       0.000000000000000       0  2
+
+  No Spin Matrix
+  c_quaternion is identity
+ No Stochastic Radiation
+  Two periods map
+
+           2  Dimensional map
+
+ Properties, NO =    2, NV =    2, INA =   64
+ *********************************************
+
+   0 -0.1127016653792583E-01   0.000000000000000       0  0
+   1  0.9225403330758517       0.000000000000000       1  0
+   1   1.922540333075852       0.000000000000000       0  1
+   2  -1.000000000000000       0.000000000000000       2  0
+   2  -2.000000000000000       0.000000000000000       1  1
+   2  -1.000000000000000       0.000000000000000       0  2
+
+
+ Properties, NO =    2, NV =    2, INA =   63
+ *********************************************
+
+   0 -0.1084202172485504E-18   0.000000000000000       0  0
+   1 -0.1489193338482967       0.000000000000000       1  0
+   1  0.7736209992275550       0.000000000000000       0  1
+   2  -1.773620999227555       0.000000000000000       2  0
+   2  -5.392322664606813       0.000000000000000       1  1
+   2  -4.618701665379258       0.000000000000000       0  2
+\end{example2}
+
+The results are identical to machine precision.  The code fragment is
+\begin{code}
+ two_period_map=one_period_map*one_period_map
+ print *, " one_period_map*one_period_map "
+ call PRINT(two_period_map)
+ call track(polymorphic_probe)
+ two_period_map=polymorphic_probe
+ print *, " Two periods map "
+ call PRINT(two_period_map)
+\end{code}
+
+Notice the syntax for the  concatenation of the maps:
+\begin{example}
+
+             two_period_map=one_period_map * one_period_map
+ 
+\end{example}
+
+In the FPP package, the operator \vn{*}  always deals with ``DA'' operations.  The symbol \vn{.o.} makes a TPSA operation. For example, suppose we {\it erroneously} replace  \vn{*} by\vn{.o.} in the same code, the result becomes:
+
+\begin{example2}
+
+ one_period_map .o. one_period_map
+ 
+           2  Dimensional map
+
+ Properties, NO =    2, NV =    2, INA =   64
+ *********************************************
+
+   0 -0.2254033307585166E-01   0.000000000000000       0  0
+   1  0.9225403330758517       0.000000000000000       1  0
+   1   1.922540333075852       0.000000000000000       0  1
+   2  -1.000000000000000       0.000000000000000       2  0
+   2  -2.000000000000000       0.000000000000000       1  1
+   2  -1.000000000000000       0.000000000000000       0  2
+
+
+ Properties, NO =    2, NV =    2, INA =   63
+ *********************************************
+
+   0  0.7459666924148337E-03   0.000000000000000       0  0
+   1 -0.1281249674648599       0.000000000000000       1  0
+   1  0.8169556986868436       0.000000000000000       0  1
+   2  -1.796161332303407       0.000000000000000       2  0
+   2  -5.437403330758516       0.000000000000000       1  1
+   2  -4.641241998455110       0.000000000000000       0  2
+
+  
+  Two periods map
+
+           2  Dimensional map
+
+ Properties, NO =    2, NV =    2, INA =   64
+ *********************************************
+
+   0 -0.1127016653792583E-01   0.000000000000000       0  0
+   1  0.9225403330758517       0.000000000000000       1  0
+   1   1.922540333075852       0.000000000000000       0  1
+   2  -1.000000000000000       0.000000000000000       2  0
+   2  -2.000000000000000       0.000000000000000       1  1
+   2  -1.000000000000000       0.000000000000000       0  2
+
+
+ Properties, NO =    2, NV =    2, INA =   63
+ *********************************************
+
+   0 -0.1084202172485504E-18   0.000000000000000       0  0
+   1 -0.1489193338482967       0.000000000000000       1  0
+   1  0.7736209992275550       0.000000000000000       0  1
+   2  -1.773620999227555       0.000000000000000       2  0
+   2  -5.392322664606813       0.000000000000000       1  1
+   2  -4.618701665379258       0.000000000000000       0  2
+
+\end{example2}
+
+The x-component of the closed orbit was incorrectly substituted into the map upon concatenation. The results for $p^{final}$ are simply wrong. So the moral of this story:
+
+{\bf When using an integrator, find the closed orbit, then the maps around it and only use ``DA'' operations in the analysis package. The closed orbit search must not be done by the TPSA package but by the original tracking code.}
+
+ Concatenation must use  \vn{*} and powers \vn{**}. For TPSA maps, the equivalent operators are \vn{.o.} and \vn{.oo.}. For example, let us run the same example computing the map around  \vn{z0=(0,0)}.
+
+\begin{example2}
+  Closed Orbit from Tracking  -1.127016653792583E-002  9.951207934035656E-020
+  Closed Orbit using TPSA map -1.000000000000000E-002  0.000000000000000E+000
+  Linear using TPSA map around z=(0,0)
+
+           2  Dimensional map
+
+ Properties, NO =    1, NV =    2, INA =  108
+ *********************************************
+
+   1   1.000000000000000       0.000000000000000       1  0
+   1   1.000000000000000       0.000000000000000       0  1
+
+
+ Properties, NO =    1, NV =    2, INA =  107
+ *********************************************
+
+   0 -0.1000000000000000E-02   0.000000000000000       0  0
+   1 -0.1000000000000000       0.000000000000000       1  0
+   1  0.9000000000000000       0.000000000000000       0  1
+
+  No Spin Matrix
+  c_quaternion is identity
+ No Stochastic Radiation
+ 
+  Linear map around computed by TPSA inversion
+
+           2  Dimensional map
+
+ Properties, NO =    1, NV =    2, INA =  108
+ *********************************************
+
+   1   1.000000000000000       0.000000000000000       1  0
+   1   1.000000000000000       0.000000000000000       0  1
+
+
+ Properties, NO =    1, NV =    2, INA =  107
+ *********************************************
+
+   1 -0.1000000000000000       0.000000000000000       1  0
+   1  0.9000000000000000       0.000000000000000       0  1
+\end{example2}
+
+The approximate closed orbit is found by solving 
+%
+%]|Expr|[#b @`b___})b D# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|""*|:"F,H&c0!)z&c0!*,I,]T,H&c0!)z&c0!*,I,M&c0!)z&c0!*,]0     |
+%| :!-<Longrightarrow "#Times|:#     :! $^:#&c0!)z^&c0!*c_,]$^F|
+%|_(",M1},H0,I:! : -;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} F(\bf z\rm )=
+T(\bf z\rm )-\bf z\rm =
+0\ \ \ \ \ \ \Longrightarrow \ \ \ \ \  {\bf z}_{c}=
+{F}^{-1}(0) \end{align}
+
+This is done by the code (the maketpsa routine is explained near \eq{maketpsa}):
+
+\begin{code}
+newton_map=one_period_map; newton_map=maketpsa(newton_map);
+newton_map%v(1)=newton_map%v(1)-(1.0_dp.cmono.1)
+newton_map%v(2)=newton_map%v(2)-(1.0_dp.cmono.2)
+
+
+newton_map=newton_map.oo.(-1)    <---- notice .oo. NOT **
+
+print * ," Closed Orbit from Tracking ",z1
+z0(1)=newton_map%v(1)
+z0(2)=newton_map%v(2)
+ print * ," Closed Orbit using TPSA map",z0 
+\end{code}
+
+The new map is computed by similarity transformation and only the zeroth order and  linear part is printed:
+
+\begin{example2}
+ print * ," Linear using TPSA map around z=(0,0)"
+newton_map=one_period_map.cut.2
+call print(newton_map)
+
+one_period_map= one_period_map.o.to_closed_orbit  <---- notice .o. NOT *
+
+one_period_map=(to_closed_orbit.oo.(-1)).o.one_period_map  <---- notice .o. and .oo. 
+
+newton_map=one_period_map.cut.2       <---- order higher than 1 are cut
+
+
+ print * ," Linear map around computed by TPSA inversion " 
+
+call print(newton_map)
+\end{example2}
+
+The reader will notice that the linear matrix is very wrong. Of course, this being TPSA, things can be improved by using a higher order. For example, if we increase the order to 10, the result is 
+
+
+\begin{example2}
+  Linear map around computed by TPSA inversion
+
+           2  Dimensional map
+
+ Properties, NO =   10, NV =    2, INA =  117
+ *********************************************
+
+   1   1.000000000000000       0.000000000000000       1  0
+   1   1.000000000000000       0.000000000000000       0  1
+
+
+ Properties, NO =   10, NV =    2, INA =  116
+ *********************************************
+
+   0 -0.2007594574035456E-08   0.000000000000000       0  0
+   1 -0.7745971876000000E-01   0.000000000000000       1  0
+   1  0.9225402812400000       0.000000000000000       0  1
+\end{example2}
+
+To the extent that we consider the integrator model to be realistic, i.e. exact in the Talman sense (see reference \cite{forestreview} ), there is no doubt that the computation of the closed orbit should be done exactly by the integrator and NOT by the Taylor series package.
+
+\subsection{List of  DA and TPSA operators and associated types} \label{sec:opeda}
+
+
+
+
+\begin{enumerate}
+\item  \vn{c_damap*c_damap} and  \vn{c_damap.o.c_damap}
+\item  \vn{c_taylor*c_damap} and  \vn{c_taylor.o.c_damap}
+\item \vn{c_spinmatrix*c_damap} and  \vn{c_spinmatrix.o.c_damap}
+\item \vn{c_quaternion*c_damap} and  \vn{c_quaternion.o.c_damap}
+\item \vn{c_spinor*c_damap} and  \vn{c_spinor.o.c_damap}
+\item \vn{c_taylor.o.c_ray}
+\item \vn{c_damap.o.c_ray} 
+\item \vn{c_spinor.o.c_ray} 
+\item \vn{c_spinmatrix.o.c_ray} 
+\item \vn{c_quaternion.o.c_ray} 
+\end{enumerate}
+
+The type \vn{c_ray} is essentially a zeroth order map, i.e., very similar to the type \vn{probe} but associated to FPP and not to the tracking code.It is defined as
+
+\begin{example2}
+ TYPE c_ray
+  complex(dp) x(lnv)            !# orbital and/or magnet modulation clocks
+  complex(dp) s1(3),s2(3),s3(3) !# 3 spin directions
+  type(complex_quaternion) q    !# quaternion
+  integer n                     !# of dimensions used in x(lnv)
+  complex(dp) x0(lnv)           !# the initial orbit around which the map is computed
+ end type c_ray
+\end{example2}
+
+The type \vn{c_spinor} consists of 3 spin directions:
+
+\begin{example}
+  type c_spinor
+     type(c_taylor) v(3)
+  end type c_spinor
+\end{example}
+
+It can be used with the $SO(3)$ or the quaternion algebra to store spin directions.
+
+\subsubsection{Operation .o. and * on c_damap} \label{sec:c_damap}
+Let us start with the type \vn{c_damap} which is
+  \begin{example}
+ type c_damap
+   type (c_taylor) v(lnv)  
+   integer :: n=0 
+   type(c_spinmatrix) s 
+   type(c_quaternion) q
+   complex(dp) e_ij(6,6) 
+   complex(dp) x0(lnv) 
+   logical :: tpsa=.false.
+ end type c_damap
+  \end{example}
+  
+  When it is created with the assignment
+
+\begin{example}
+                             c_damap=probe_8
+\end{example}
+
+then the constant part of the map is the final trajectory of the initial ray.  In any ``DA'' concatenation using the operator \vn{*}, this constant part is ignored. Let us do a one-dimensional linear example:
+%
+%]|Expr|[#b @`b___})># b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|""*|:"M,Hx,I,]ax,Kb"#Monaco^:#     and     :"N,Hx,I,]cx,Kd:! |
+%|: -;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} M(x)=
+ax+b~~~~~{\rm a}{\rm n}{\rm d} ~~~~~N(x)=
+cx+d \end{align}
+Then $M*N$ will be:
+%
+%]|Expr|[#b @`b___}).# b'4" Chicago^: ;bP8&c0!*-=<c!$1(#"!*|:!M|
+%|,JN}},Hx,I,]ac x,Kb""Monaco^:"   : -;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align}\left({M*N}\right)(x)=
+ac\ x+b~~~\end{align}
+
+
+The TPSA concatenation will be given by
+%
+%]|Expr|[#b @`b___})2# b'4" Chicago^: ;bP8&c0!*-=<c!$1(%"!*|:!M|
+%|,No,NN}},Hx,I,]ac x,Kad,Kb""Monaco^:"  : ;8/<:!;bP8conco: ;8/=|
+%|;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align}\left({M.o.N}\right)(x)=
+ac\ x+ad+b~~\label{conco}\end{align}
+
+In general, \eq{conco} makes little sense because the variable $x$ is around some orbit while the TPSA map represents the full orbit in the original coordinates. However, if the original coordinates are known, they can be fed into the \vn{c_damap} component \vn{x0} and the map can be transformed as follows:
+%
+%]|Expr|[#b @`b___})b P# b'4" Chicago^: ;bP8&c0!*-=<c$4Q^"!Times|:!M}|
+%|<c!$1^x}""Helvetica|:",F:!,]"#Monaco^:#maketpsa<c!$1^"$*|:$M}|
+%|,Hx,I,]a,Hx,MM,Ex0,I,Kb:#  : ;bP;/"<c$4Q^:!;bP8N}<c!$1^x}:",F|
+%|:!,]:#maketpsa<c!$1^:$N},Hx,I,]c,Hx,MN,Ex0,I,Kd:#  : ;8/<:$;bP8maketpsa|
+%|: ;8/=;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align}\widetilde{M}\left({x}\right)&=
+{\rm m}{\rm a}{\rm k}{\rm e}{\rm t}{\rm p}{\rm s}{\rm a}\left({M}\right)(x)=
+a(x-M\%x0)+b~~\nonumber \\
+\widetilde{N}\left({x}\right)&=
+{\rm m}{\rm a}{\rm k}{\rm e}{\rm t}{\rm p}{\rm s}{\rm a}\left({N}\right)(x)=
+c(x-N\%x0)+d~~\label{maketpsa}\end{align}
+
+The component flag \vn{tpsa} of \vn{c_damap} is set to true and the map concatenation behaves as in \eq{maketpsa}.  Finally we notice that if the maps $M$ and $N$ were extracted from the same integrator, we expect the variable $N\%x0$ to be the constant $b$ of the map $M$: the final value of the ray when $x=0$ must be the initial value of the ray entering  $N$. This is true whether we integrate through magnets or compute trajectories of bullets: it is a mathematical fact.
+
+The reverse operation is also available. Consider this piece of code:
+
+
+\begin{code}
+type{c_damap} m1,m2,mtot_tpsa,mtot_da,mtot
+    .
+    .
+mtot_da=m2*m1
+call print(mtot_da)
+
+m1=maketpsa(m1)
+m2=maketpsa(m2)
+mtot_tpsa=m2.o.m1
+call print(mtot_tpsa)
+mtot=makeda(mtot_tpsa)
+call print(mtot)
+\end{code}
+    
+We would expect \vn{mtot} and \vn{mtot_da} to be identical. However this is only true if the order of the calculation is 1 or infinite: there is no feed down in a linear calculation and they are exactly computed if the order is infinite. 
+Again, we emphasize that the user of an integrator should always manipulate ``DA'' maps. On occasion, we need to evaluate maps or taylor series for a certain value of the ray, this is the only time we should use TPSA operators.
+
+\subsubsection{Operation .o. with type c_ray } \label{sec:c_ray}
+
+We recall the type \vn{c_ray}:
+
+\begin{example2}
+ TYPE c_ray
+  complex(dp) x(lnv)            !# orbital and/or magnet modulation clocks
+  complex(dp) s1(3),s2(3),s3(3) !# 3 spin directions
+  type(complex_quaternion) q    !# quaternion
+  integer n                     !# of dimensions used in x(lnv)
+  complex(dp) x0(lnv)           !# the initial orbit around which the map is computed
+ end type c_ray
+\end{example2}
+
+The first obvious thing to do is to calculate the effect of a \vn{c_damap} on a \vn{c_ray}. All the so-called matrix codes, from COSY INFINITY to MARYLIE, must have that function since they are not integrators.  The syntax of FPP is simple:
+\vn{c_ray}= \vn{c_damap.o.c_ray}.
+
+Here is an example code which does a calculation 4 differents ways in addition to exact tracking from PTC.
+
+\pagebreak
+
+
+\begin{code}
+M1=MAKETPSA(my_map)
+
+x=1.01_dp*closed
+ray=x
+ray%x0(1:6)=closed
+ray=m1.o.ray
+write(6,*) " Using a TPSA map "
+                                call print(ray)
+
+write(6,*) " Using a DA map "
+ray=x
+ray%x0(1:6)=closed
+ray=my_map.o.ray
+                                call print(ray)
+
+write(6,*) " Using a TPSA map and SO(3)"
+CALL MAKESO3(m1)
+use_quaternion=.FALSE.
+ray=x
+ray%x0(1:6)=closed
+ray=m1.o.ray
+                                call print(ray)
+write(6,*) " Using a DA map and SO(3) "
+CALL MAKESO3(MY_MAP)
+use_quaternion=.FALSE.
+ray=x
+ray%x0(1:6)=closed
+ray=my_map.o.ray
+                                call print(ray)
+                                
+use_quaternion=.true.
+xs0=x
+call propagate(als,xs0,state,fibre1=1)
+                               call print(xs0)
+\end{code}
+
+\vn{my_map} is a one-turn map produced by PTC.  \vn{m1} is a TPSA map as described by \eq{maketpsa}. This particular run used quaternions. So we also turn both \vn{my_map} and \vn{m1} into maps using $SO(3)$. Finally we compute the exact result as seen by PTC.  In the limit of large order, the Taylor series results converge, as expected, to PTC's results.
+
+
+
+
+
+\subsubsection{The ** and .oo. operators} \label{sec:powers}
+
+
+These operators do the expected thing: they raise a \vn{c_damap} to a power where the multiplication is either \vn{*} or \vn{.o.}. If the power is negative, they compute the inverse map. This map will not be unique in the TPSA case \vn{.oo. } because as usual feed down effects will depend on the order of truncation.
+
+\subsection{Types related to analysis} \label{sec:analysis}
+
+The types described here are complex and we refer the reader to reference \cite{thebook2} for detailed examples.
 
 \subsection{Obsolete Types} 
 \section{overloading}\label{sec:over}
@@ -903,3 +1446,8 @@ We will now assume that we have a proper map of the type \vn{c_damap}. This map 
 
 
 \end{document}
+
+ Let us assume that a person wants the linear lattice functions. The first step would be to compute the closed orbit and then find the matrix around the said orbit. A ``TPSA'' package can find the matrix around any orbit including the closed orbit found by the integrator. In a machine with errors or fringe fields or bizarre models, this closed orbit is not the so-called design orbit.  A code capable of computing Taylor expansions around any orbit will  thus find the matrix around the closed orbit.This can be done with truncated power series, i.e., TPSA.
+
+Once the closed orbit is found, we can compute Taylor maps around that orbit. All the Taylor maps we compute are around that orbit and thus the orbit itself is not used in an approximate calculation using the Taylors maps. Some of these calculations involve differential operators like vector fields. We could, although we do not usually, only play with vector fields. The question would be: if we truncated all the vector fields to order  $N_0$, the order of the Taylor series package and manipulated these vector fields, do we get the same answer if we manipulated the Taylor maps associated with the vector fields? The answer is yes if we are doing everything around the closed orbit and the maps have no constant term.
+However a mathematician can say that our Lie operators,i.e. the vector fields, form a differential algebra and this insures the self-constancy of the results. 
