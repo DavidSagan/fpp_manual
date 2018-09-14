@@ -7,6 +7,7 @@ type(probe) :: probe0
 type(probe_8) :: polymorphic_probe  
 type(c_damap) Identity,one_period_map,newton_map,to_closed_orbit
 type(c_damap) two_period_map
+type(c_vector_field) f
 integer :: nd = 1 , no = 2 , np = 0 , imap , ipol,again
 logical :: ok=.true.
 longprint=.false.
@@ -93,6 +94,16 @@ call print(newton_map)
 
 !call clean(one_period_map,one_period_map,prec=1.d-9)
 ! call print(one_period_map)
+call alloc(f)
+!f=log(one_period_map)
+
+!one_period_map=maketpsa(one_period_map)
+
+f=c_logf_spin( one_period_map)  !,h,epso,n,tpsa )     !log(one_period_map)
+
+one_period_map=exp(f,one_period_map)
+call PRINT(f)
+call PRINT(one_period_map)
 
 print * , "Do you want to redo this calculation?"
 print * , " 0=> no, 1=> yes ?"; read(5,*) again

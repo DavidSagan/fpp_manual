@@ -1439,9 +1439,407 @@ These operators do the expected thing: they raise a \vn{c_damap} to a power wher
 
 The types described here are complex and we refer the reader to reference \cite{thebook2} for detailed examples.
 
+\subsubsection{c_vector_field} \label{sec:analysis}
+
+  \begin{example1}
+  TYPE c_vector_field  !@1
+   !@1 n dimension used v(1:n) (nd2 by default)
+   !@1 nrmax iterations some big integer if eps<1  
+   integer :: n=0,nrmax
+   !@1 if eps=-integer  then |eps| # of Lie brackets are taken 
+   !@ otherwise eps=eps_tpsalie=10^-9
+   real(dp) eps
+   type (c_taylor) v(lnv)   ! vector field denoted by F below
+   type(c_quaternion) q   ! quaternion operator denoted by f below
+  END TYPE c_vector_field
+   \end{example1} 
+  
+  The type \vn{c_vector_field} is extremely important in perturbation theory. It is its analysis that permits someone to extract resonances, tunes shifts, damping, etc.... out of the \vn{c_damap}.  In general, if you have a  \vn{c_vector_field}  you can produce a \vn{c_damap} by the process of exponentiation.
+  
+  %
+%]|Expr|[#b @`b___}))# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|""*|:"M:!,F,]-<exp<c!$1(#:"F"#Symbol^:#&c0  /7/1}}:"&c0!*I:! |
+%|: -;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} M&=\exp\left({F\cdot \nabla }\right)I \end{align}
+
+Here $I$ is the identity.  But one can also act on any map:
+%
+%]|Expr|[#b @`b___})5# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|""*|:"P:!,F,]-<exp<c!$1(#:"F"#Symbol^:#&c0  /7/1}}:"&c0!*N:! |
+%|-<Longleftrightarrow "$Times|:$P,]N:#&c0  .P:$&c0!*M : ;8/<:";bP8eqconc|
+%|: ;8/=;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} P&=\exp\left({F\cdot \nabla }\right)N \Longleftrightarrow P=
+N\circ M\ \label{eqconc}\end{align}
+
+
+
+The type \vn{c_vector_field}  is general: it will create a map with a constant coefficient if it has itself a constant coefficient. In that case, it is a TPSA object and feed down matters. If it has no constant part, then it is a DA object with total self-consistency. 
+
+We now list the various operations, italic objects are the default value of an  optional variable. The operator $\widehat{F}$ below stands really for %%
+%
+%]|Expr|[#b @`b___})0# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|<c$5Q^""Times|:"F}q,]"#*|:#F"$Symbol^:$&c0  /7/1:#&c0!*q,Kqf:! |
+%|: ;8/<:#;bP8hop, : ;8/=;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \widehat{F}q=
+F\cdot \nabla q+qf \label{hop?}\end{align}
+%
+where $\hat{f}$ is a quaternion operator.  The $\widehat{F}$  acts as on a quaternion as:
+%
+%]|Expr|[#b @`b___})2# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|<c$5Q^""Times|:"H}q,]"#*|:#F"$Symbol^:$&c0  /7/1:#&c0!*q,Kq:!|
+%|:#f:! : ;8/<:#;bP8hop: ;8/=;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \widehat{F}q=
+F\cdot \nabla q+qf \label{hop}\end{align}
+%
+or $\hat{f}q=qf$.  This reversal order is necessary for the self-consistency of the regular maps and the Lie operators. This is explained in Appendix \ref{sec:compo}
+
+
+
+Please take note of the of the reverse ordering in \eq{hop}. It is a consequence of \eq{eqconc} when extended to quaternions.
+
+\begin{enumerate}
+
+\item  \vn{c_vector_field=c_vector_field * c_taylor }        %
+%
+%]|Expr|[#b @`b___})'# b'4" Helvetica|: ;bP8&c0!*,D"!Symbol^:!&c0  .N|
+%|""*|:"&c0!*F:!&c0  /7/1:"&c0!*t: ,D}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+$\rightarrow F\cdot \nabla t$
+
+\item  \vn{  c_damap =c_vector_field * c_damap }         
+%
+%]|Expr|[#b @`b___})%# b'4" Helvetica|: ;bP8&c0!*,D"!Symbol^:!&c0  .N|
+%|<c$5Q^""Times|:"&c0!*H}"#*|:#M: ,D}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+$\rightarrow \widehat{F}M$
+
+\item \vn{c_taylor=exp(c_vector_field,c_taylor) }
+
+\item \vn{c_damap=exp(c_vector_field,c_damap:{\it Identity})}
+%
+%]|Expr|[#b @`b___})&# b'4" Helvetica|: ;bP8&c0!*,D"!Symbol^:!&c0  .N|
+%|: &c0!*exp<c!$1^<c$5Q^""*|:"H}}M: ,D}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+$\rightarrow exp\left({\widehat{F}}\right)M$
+
+\item  \vn{c_vector_field=exp(c_vector_field,c_vector_field)}  See \sec{sec:transbracket} and \eq{afpp}.
+
+\item \vn{c_quaternion=exp(c_vector_field,c_quaternion) } $\rightarrow exp\left({\widehat{F}}\right)q$
+
+\item \vn{c_quaternion=exp(c_quaternion,c_quaternion) } $\rightarrow exp\left({q_2}\right)q_1$ Useful for constant quaternion map: used in the linear normal form with quaternion.
+
+\item \vn{c_spinmatrix=exp(c_spinor,c_spinmatrix) } $\rightarrow exp\left({\omega\times}\right)s$ Useful for constant spinmatrix: used in the linear normal form with $SO(3)$.
+
+\item \vn{ c_vector_field = exp(c_damap,h:{\it 0},epso:computed   ) }   
+
+
+ %$\rightarrow exp\left({\omega\times}\right)s$ Useful for constant spinmatrix: used in the linear normal form with $SO(3)$.
+
+xxxxxxxxxxxxxxxxxx
+
+\item \vn{exp(c_factored_lie,c_spinmatrix) }
+
+\begin{example}
+TYPE c_factored_lie
+      integer :: n = 0   
+      integer :: dir= 0     
+       type (c_vector_field), pointer :: f(:)=>null()                   
+END TYPE c_factored_lie
+\end{example}
+
+
+\end{enumerate}
 \subsection{Obsolete Types} 
 \section{overloading}\label{sec:over}
 \section{subpackage}\label{sec:subp}
+\section{Lie Map and Lie operator}\label{sec:compo} 
+
+The operator 
+%
+%]|Expr|[#b @`b___})2# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|<c$5Q^""Times|:"H}q,]"#*|:#F"$Symbol^:$&c0  /7/1:#&c0!*q,Kq:!|
+%|:#f:! : ;8/<:#;bP8hop: ;8/=;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \widehat{F}q=
+F\cdot \nabla q+qf \label{hop1}\end{align}
+%
+%
+is the general operator used by FPP.   If we let this operator act on the identity map $I_{total}$, which contains the orbital identity and the unit quaternion,  we obtain a map denoted by ($m,q)$:
+%
+%]|Expr|[#b @`b___})b D# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|""Monaco^:"if    $^"#Times|:#I(!total}_:!,F,]<c!$1(#$^:#I(!orbital}|
+%|_,L1}}: ;bP;/":";bP8     then  :!-<exp<c!$1^<c$5Q^:#H}}$^I(!total}|
+%|_:!,F,]<c!$1))# b'4-<exp<c!$1)## b'4"$*|:$F"%Symbol^:%&c0  /7|
+%|/1}& b!( b"0 b#8 b$@ b%H b&P!WW}}$^:#&c0!*I(!orbital}_,L:!-<exp|
+%|<c!$1^<c$5Q^:#H}}1}& b!( b"0 b#8 b$@ b%H b&P!WW}} ,]:! <c!$1)## b'4|
+%|:$m:#,L:$q}& b!( b"0 b#8 b$@ b%H b&P!WW}} : ;8/<:$;bP8eq,Zko: ;8/=|
+%|;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} {\rm i}{\rm f}~~~~{I}_{total}&=\left({{I}_{orbital},1}\right)\nonumber \\
+~~~~~{\rm t}{\rm h}{\rm e}{\rm n}~~\exp\left({\widehat{F}}\right){I}_{total}&=\left({\exp\left({F\cdot \nabla }\right){I}_{orbital},\exp\left({\widehat{F}}\right)1}\right)\ =
+ \left({m,q}\right)\ \label{eq:ko}\end{align}
+The map $ \left({m,q}\right)$ is a regular spin-orbital map.  Let us assume that we concatenate this map with another spin-orbital map $ \left({n,l}\right)$. Then the total map is just:
+%
+%]|Expr|[#b @`b___})/# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|""Times|:"U:!,]<c!$1)## b'4"#*|:#n:",L:#l|
+%|}& b!( b"0 b#8 b$@ b%H b&P!WW}}<c!$1)## b'4m:",L:#q|
+%|}& b!( b"0 b#8 b$@ b%H b&P!WW}},]<c!$1))# b'4n"$Symbol^:$&c0  .P|
+%|:#&c0!*m:",L:#l:$&c0  .P:#&c0!*m q}& b!( b"0 b#8 b$@ b%H b&P!WW}}|
+%| : ;8/<:#;bP8eq,Zcon: ;8/=;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} U=\left({n,l}\right)\left({m,q}\right)=
+\left({n\circ m,l\circ m\ q}\right)\ \label{eq:con}\end{align}
+%
+However, thanks to our right to left quaternion operator in \eq{hop1}, the full Lie map preserves the substitution rules which are known to be correct for a pure orbital Lie operator:
+%
+%]|Expr|[#b @`b___})b C# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|""Times|:"U:!,]-<exp<c!$1^<c$5Q^:"H}}<c!$1)## b'4"#*|:#n:",L:#l|
+%|}& b!( b"0 b#8 b$@ b%H b&P!WW}}:!,F,]<c!$1))# b'4:#n"$Symbol^:$&c0  .P|
+%|:#&c0!*m:",L:#l:$&c0  .P:#&c0!*m q}& b!( b"0 b#8 b$@ b%H b&P!WW}}|
+%| : ;bP;/""%Monaco^:%;bP8 or:!,F: ;bP;/":!;bP8 :%  :#l:$&c0  .P|
+%|:#&c0!*m q:!,F,]-<exp<c!$1^<c$5Q^:"H}}:#l  : ;8/<:#;bP8eq,Zconq|
+%|: ;8/=;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} U=\exp\left({\widehat{F}}\right)\left({n,l}\right)&=\left({n\circ m,l\circ m\ q}\right)\ \nonumber \\
+~{\rm o}{\rm r}&\nonumber \\
+ ~~l\circ m\ q&=\exp\left({\widehat{F}}\right)l\ \ \label{eq:conq}\end{align}
+
+\section{Transformation of a  Lie operator}\label{sec:trans} 
+
+Consider the Lie map $\cal A$ operator associated with the phase space map $A=(a,\alpha)$. It acts on a phase space map $M=(m,q)$ (see \sec{sec:compo}) following the formula:
+%
+%]|Expr|[#b @`b___}),# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|: A<c!$1(#""*|:"m,Lq}}:!,F,]<c!$1((m"#Symbol^:#&c0  .Pa:"&c0!*,L|
+%|q:#&c0  .P:"&c0!*a:#&c0  a}}: ;8&c0!*/<:";bP8eq,Zkoopman: ;8/=|
+%|;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} {\cal A}\left({m,q}\right)&=\left({m\circ \alpha ,q\circ a\alpha }\right)\label{eq:koopman}\end{align}
+How does a vector field $\widehat{F}$ as in \eq{hop1} if transformed by the map of \eq{eq:koopman}? This has to be done by a similarity transformation:
+%
+%]|Expr|[#b @`b___})6# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|""*|:" : A<c!$1()"#Times|:#F"$Symbol^:$&c0  /7/1:"&c0!*,K:!-<|
+%|hat-[:"f:!-]}}$^: A_(":!,M1},F,]:" <c$4Q^F}:$&c0  /7/1:"&c0!*,K|
+%|:!-<hat-[<c$4Q^:"f}:!-] : ;8/<:";bP8aacts: ;8/=;bP8-;|
+%|}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \ {\cal A}\left({F\cdot \nabla +\hat{f}}\right){{\cal A}}^{-1}&=\ \widetilde{F}\cdot \nabla +\hat{\widetilde{f}} \label{aacts}\end{align}
+%
+The answer for $\widetilde{F}$ and  $\widetilde{f}$ is:
+%
+%]|Expr|[#b @`b___})8# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|$^<c$4Q^""*|:"F}^k_:!,F,]<c!$1(#$^:"F^i_$^"#Symbol^:#&c0  .V^|
+%|:"&c0!*i_$^a^k(",M1}}}:#&c0  .P:"&c0!*a: ;bP;/":!;bP8 -<hat-[|
+%|"$Times|:$f:!-],F,]<c!(A(&<c!$1(#$^<c$4Q^:"F}^k_$^:#&c0  .V^:"&c0!*k|
+%|_$^:#&c0  a_(":"&c0!*,M1}}},K$^:#&c0  a_(":"&c0!*,M1}f:#&c0  .P|
+%|:"&c0!*a}}:#&c0  .P:"&c0!*a:! : ;8/<:";bP8eq,Ztransfgrag: ;8/=|
+%|;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} {\widetilde{F}}_{k}&=\left({{F}_{i}{\partial }_{i}{a}_{k}^{-1}}\right)\circ a\nonumber \\
+ \hat{f}&=\left\{{\left({{\widetilde{F}}_{k}{\partial }_{k}{\alpha }^{-1}}\right)+{\alpha }^{-1}f\circ a}\right\}\circ a \label{eq:transfgrag}\end{align}
+
+\section{Lie bracket and Lie bracket operator}\label{sec:transbracket}
+
+We first evaluate the commutator of two line operators $\widehat{F}$ and  $\widehat{H}$:
+%
+%]|Expr|[#b @`b___})6# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|<c!=Q(#<c$5Q^""Times|:"F},L<c$5Q^H}}}:!,F,]<c!=Q(5"#*|:#F"$Symbol^:$&c0  /7|
+%|/1:#&c0!*,K:!-<hat-[:#f:!-] ,L:#H:$&c0  /7/1:#&c0!*,K:!-<hat-[|
+%|h-] }}: ;bP;/":!;bP8 ,F,], :#G:$&c0  /7/1:#&c0!*,K:!-<hat-[:#g|
+%|:!-] : ;8/<:#;bP8hopc: ;8/=;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \left[{\widehat{F},\widehat{H}}\right]&=\left[{F\cdot \nabla +\hat{f} ,H\cdot \nabla +\hat{h} }\right]\nonumber \\
+ &=G\cdot \nabla +\hat{g} \label{hopc}\end{align}
+ 
+The answer for $\widehat{G}$ is: 
+%
+%]|Expr|[#b @`b___})b D# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|""*|:"G:!,F,] <c!,Q(#"#Times|:#F,LH}},]F"$Symbol^:$&c0  /7/1:"&c0!*H|
+%|,MH:$&c0  /7/1:"&c0!*F: ;bP;/":!;bP8 g,F,]<c!=Q(#:#h,Lf}},KF:$&c0  /7|
+%|/1:"&c0!*h,MG:$&c0  /7/1:"&c0!*f:! : ;8/<:!;bP8liebra: ;8/=;bP8-;|
+%|}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} G&= \left\langle{F,H}\right\rangle=
+F\cdot \nabla H-H\cdot \nabla F\nonumber \\
+ g&=\left[{h,f}\right]+F\cdot \nabla h-G\cdot \nabla f \label{liebra}\end{align}
+
+
+We can define a generalised Lie bracket between the vectors and the quaternions defining the Lie operators: 
+%
+%]|Expr|[#b @`b___})&# b'4" Chicago^: ;bP8&c0!*-=<c%"C^<cY A(#|
+%|<c!$1(#"!*|:!G,Lg}}""Helvetica|:",]<c!,Q(#<c!$1(#F,Lf}},L<c!$1|
+%|(#H,Lh}}}}}}()"#Monaco^:#FPP,Gs c"$Times|:$-?:#vector:$-?:#field}|
+%|_}: ;8/<:!;bP8liebrafpp: ;8/=;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align}\underbrace{\left({G,g}\right)=\left\langle{\left({F,f}\right),\left({H,h}\right)}\right\rangle}\limits_{{\rm F}{\rm P}{\rm P}'{\rm s}~{\rm c}\_{\rm v}{\rm e}{\rm c}{\rm t}{\rm o}{\rm r}\_{\rm f}{\rm i}{\rm e}{\rm l}{\rm d} }^{}\label{liebrafpp}\end{align}
+
+
+
+
+In the code, FPP, it is truly \eq{liebrafpp} which is implemented: vector fields and Lie maps are not represented by a big linear matrix acting on monomials but by  differential operators.
+
+Finally we can defined the Lie which acts on the vector field. Going back to \eq{aacts}, let us assume that $\cal A$ is represented by a Lie exponent $\widehat{A}$,
+%
+%]|Expr|[#b @`b___}))# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|: A:!,F,]-<exp<c!$1^<c$5Q^""*|:"A}}: :! : -;|
+%|}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} {\cal A}&=\exp\left({\widehat{A}}\right) \end{align}
+%
+ then we must have:
+%
+%]|Expr|[#b @`b___})6# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|""*|:" : A<c!$1()"#Times|:#F"$Symbol^:$&c0  /7/1:"&c0!*,K:!-<|
+%|hat-[:"f:!-]}}$^: A_(":!,M1},F,]:" <c$4Q^F}:$&c0  /7/1:"&c0!*,K|
+%|:!-<hat-[<c$4Q^:"f}:!-] : ;8/<:";bP8aacts: ;8/=;bP8-;|
+%|}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \ {\cal A}\left({F\cdot \nabla +\hat{f}}\right){{\cal A}}^{-1}&=\ \widetilde{F}\cdot \nabla +\hat{\widetilde{f}} \label{aacts}\end{align}
+
+ 
+
+%
+%]|Expr|[#b @`b___});# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|""*|:" : A<c$5Q^:"F}$^: A_(":!,M1},F,]:" :!-<exp<c!$1^<c$5Q^:"A}}|
+%|<c$5Q^F}:!-<exp<c!$1(":",M<c$5Q^A}}}:! : ;bP;/":!;bP8 ,F,]-<exp|
+%|<c!$1(#: ,Z<c$5Q^:"A}: ,Z}}<c$5Q^:"F} : ;8/<:";bP8asimillie: ;8/=|
+%|;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \ {\cal A}\widehat{F}{{\cal A}}^{-1}&=\ \exp\left({\widehat{A}}\right)\widehat{F}\exp\left({-\widehat{A}}\right) \nonumber \\
+ &=\exp\left({\dragt\widehat{A}\dragt}\right)\widehat{F}\ \label{asimillie}\end{align}
+where
+%
+%]|Expr|[#b @`b___})0# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|: ,Z<c$5Q^""*|:"A}: ,Z<c$5Q^"#Times|:#F}: ,]<c!=Q)## b'4<c$5Q|
+%|^:"A}: ,L<c$5Q^:#F}}& b!( b"0 b#8 b$@ b%H b&P!WW}}:",]<c$5Q^A}|
+%|<c$5Q^:#F}: ,M<c$5Q^:#F}<c$5Q^A}:! : -;|
+%|}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \dragt\widehat{A}\dragt\widehat{F}=\left[{\widehat{A},\widehat{F}}\right]=
+\widehat{A}\widehat{F}-\widehat{F}\widehat{A} \end{align}
+and finally, thanks to the homomorphism between the commutators and the Lie bracket:
+%
+%]|Expr|[#b @`b___})4# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|""*|:" :! <c$5Q^<c$4Q^"#Times|:#F}}:!,]-<exp<c!$1(#: ,Z<c$5Q^|
+%|:"A}: ,Z}}<c$5Q^:"F}:!,F,]  $(""$Monaco^:$Operator<c!(A((:!-<|
+%|exp<c!$1(':",Z,HA,La,I,Z}},HF,Lf,I}}}__:!   : ;8/<:";bP8asimillieh|
+%|: ;8/=;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \  \widehat{\widetilde{F}}=\exp\left({\dragt\widehat{A}\dragt}\right)\widehat{F}&=  {{\rm O}{\rm p}{\rm e}{\rm r}{\rm a}{\rm t}{\rm o}{\rm r}\left\{{\exp\left({:(A,a):}\right)(F,f)}\right\}}^{}   \label{asimillieh}\end{align}
+
+%
+The word ``Operator'' in front of the curly bracket in \eq{asimillieh} indicates that the object inside the brackets has a ``hat'' on top of it and is thus a Lie operator.  The colon around $:(A,a):$ indicates, \`a la Dragt, that a Lie bracket must be taken with what follows as defined by \eqs{liebra} and \eqe{liebrafpp}. This Lie bracket is in FPP and is defined by the Fortran operator ``\vn{.lb.}''. So we have:
+%
+%
+%]|Expr|[#b @`b___})/# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|""*|:" :! <c!$1(#<c$4Q^"#Times|:#F},L<c$4Q^f}}}:!,F,]  $(""$Monaco^:$Operator|
+%|<c!(A((:!-<exp<c!$1(':",Z,HA,La,I,Z}},HF,Lf,I}}}__:!  : ;8/<:";bP8afpp|
+%|: ;8/=;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \  \left({\widetilde{F},\widetilde{f}}\right)&=  {{\rm O}{\rm p}{\rm e}{\rm r}{\rm a}{\rm t}{\rm o}{\rm r}\left\{{\exp\left({:(A,a):}\right)(F,f)}\right\}}^{}  \label{afpp}\end{align}
+
+\Eq{afpp} is the complete equivalent of \eq{eq:transfgrag}.  In \eq{afpp} the Lie operator (vector field) of $\cal A$ is known while in \eq{eq:transfgrag} we know only the Taylor spin-orbital maps $(A,a)$.
+
+\section{Logarithm of a map and  ``DA'' self-consistency}\label{sec:logval}
+
+We first display the recursive loop for the calculation of the Lie operator of a spin-orbital map with quaternions. Then we explain the type of validation of all our operators in the differential algebraic (no feed down) that can be performed by FPP to check weed out theory or programming mistakes.
+ 
+ \subsection{ The logarithm of a Lie spin-orbital map}\label{sec:log}  
+If a matrix $M$ is near the identity, the following series converges:
+%
+%]|Expr|[#b @`b___})+# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|-<log<c!$1^""*|:"M}:!,F,]<c%#D("$^<c!$1(":",M1}}_(#n,K1}<2^$^|
+%|<c!$1(#M,M1}}_^n^n}}(":!-<sum}(#:"n,]1}^"#Symbol^:#&c0  .E}: ;8&c0!*/<|
+%|:";bP8logm: ;8/=;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \log\left({M}\right)&=\sum\limits_{n=
+1}^{\infty } {\left({-1}\right)}^{n+1}{{\left({M-1}\right)}^{n} \over n}\label{logm}\end{align}
+%
+Of course this applies trivially to a linear map of phase space. What about a Lie map? Consider a nonlinear map $(M,q)$ and let us assume that it can be approximated by a Lie exponent:
+%
+%]|Expr|[#b @`b___})5# b'4" Chicago^: ;bP8&c0!*-=<c!$1(#"!*|:!m|
+%|,Lq}}""Helvetica|:",F,]-<exp<c!$1():!F"#Symbol^:#&c0  /7/1, :!&c0!*,K|
+%|:"-<hat-[:!f:"-]}}<c!$1(#:!I,L1}}: ;bP;/":";bP8 ,F:! :#&c0  .[|
+%|<c!$1(4:!&c0!*I ,K F:#&c0  /7/1:!&c0!*I,K'b M,L1,K:"-<hat-[:!f|
+%|:"-]1:!,K}}: ;bP;/":";bP8 ,F:#&c0  .[<c!$1(+:!&c0!*I ,K F,K'b M|
+%|,L1,Kf}}: ;8/<:!;bP8expIa: ;8/=;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align}\left({m,q}\right)&=\exp\left({F\cdot \nabla +\hat{f}}\right)\left({I,1}\right)\nonumber \\
+ &\ \approx \left({I\ +\ F\cdot \nabla I+\cdots,1+\hat{f}1+}\right)\nonumber \\
+ &\approx \left({I\ +\ F+\cdots,1+f}\right)\label{expIa}\end{align}
+%
+The Lie map $\exp\left({F\cdot \nabla + \hat{f}}\right)$ acts on the space of functions and thus it is possible to write a matrix for it using a basis made of monomials. For example, in 1-d-f, for polynomials of degree $n_0$, the space of  polynomials is of dimension $(n_0+2)!\over {n_0!2!}$. Therefore the matrix for the orbital of  $\exp\left({F\cdot \nabla }\right)$ is of dimension $({(n_0+2)!\over {n_0!2!}})^2$. This matrix, as I pointed out in reference \cite{thebook}, is the transpose of the matrix which propagates the moments.  
+
+Here I do not have matrices in the nonlinear case, so I must be a little more resourceful. First one notices that    \eq{expIa} gives us a trivial approximation of the vector field:
+%
+%]|Expr|[#b @`b___})5# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|,H""*|:"F,Lf,I:!,F"#Symbol^:#&c0  .[:"&c0!*,Hm,Lq,I,M<c!$1(#I|
+%|,L1}}:! : ;8/<:";bP8expIa1: ;8/=;bP8-;|
+%|}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} (F,f)&\approx (m,q)-\left({I,1}\right) \label{expIa1}\end{align}
+%
+I proceed further by assuming that the vector field $(F,f)$ is already known to some order and that the result is $(F^k,f^k)$. I can write:
+%
+%]|Expr|[#b @`b___})2# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|-<exp<c!$1(&""*|:",M$^F_^k"#Symbol^:#&c0  /7/1:"&c0!*,M$^f_^k}}|
+%|<c!$1(#m,Lq}}:!,F,]<c!$1(#I,L1}} ,K <c!$1(#"$Times|:$t,Lu}} : ;8/<|
+%|:";bP8kint: ;8/=:!;bP8 : -;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \exp\left({-{F}^{k}\cdot \nabla -{f}^{k}}\right)\left({m,q}\right)&=\left({I,1}\right) + \left({t,u}\right)\ \label{kint} \end{align}
+%
+%
+This algorithm starts with $(t,u)=(m-I,q-1)$. At the end we expect $t$ and $u$ to be zero. My goal is to find a relatively fast algorithm. The first step is to find a vector field which can reproduce the map $(I+t,1+u)$. To second-order in $(t,u)$, I can write:
+%
+%]|Expr|[#b @`b___})b M# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|-<exp<c!$1(&$^""Symbol^:"&c0  t^"#*|:#&c0!*3_:"&c0  /7/1:#&c0!*,K|
+%| $(%:!-<hat-[:"&c0  q:!&c0!*-]}^:#3_}}:! ,H:#I,L1,I:!,F,] ,H"$Times|:$I|
+%|,L1,I,K,Ht,Lu,I: ;8/<:#;bP8eqfort: ;8/=:";bP8 :!-<-< "%Monaco^:%where|
+%|  <c!$!(%:!-<vphantom-[:"&c0  D:!&c0!*-]}}$^:"&c0  t^:#&c0!*3|
+%|_,L$(%:!-<hat-[:"&c0  q:!&c0!*-]}^:#3_<c! 1(%:!-<vphantom-[:"&c0  D|
+%|:!&c0!*-]}} ,],F:#,Ht,Lu,I,K$^:"&c0  e^:#&c0!*2_: .O-;|
+%|}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \exp\left({{\tau }_{3}\cdot \nabla +\ {\hat{\theta }}_{3}}\right) (I,1)&= (I,1)+(t,u)\label{eqfort} \\ {\rm w}{\rm h}{\rm e}{\rm r}{\rm e}~~\left({\vphantom{\Delta }}\right.{\tau }_{3},{\hat{\theta }}_{3}\left.{\vphantom{\Delta }}\right) =&(t,u)+{\varepsilon }_{2}\nonumber 
+\end{align}
+%
+Solving for ${\varepsilon }_{2}$, I get:
+%
+%]|Expr|[#b @`b___})3# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|$^""Symbol^:"&c0  e^"#*|:#&c0!*2_:!,F,]:#,M<2^1^2}<c!(A()t:"&c0  /7|
+%|/1, :#&c0!*,K:!-<hat-[:#u:!-]}}<c!$1(#:#t,Lu}},]<c!$1(-t:"&c0  /7|
+%|/1:#&c0!*t,Lt:"&c0  /7/1:#&c0!*u,K$^u_^2}} :! : ;8/<"$Times|:$eq|
+%|:!,Ze2: /=;bP8-;}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} {\varepsilon }_{2}&=-{1 \over 2}\left\{{t\cdot \nabla +\hat{u}}\right\}\left({t,u}\right)=
+\left({t\cdot \nabla t,t\cdot \nabla u+{u}^{2}}\right)\  \label{eq:e2}\end{align}
+%
+I can then rewrite \eq{eqfort} using \eq{eq:e2}:
+%
+%]|Expr|[#b @`b___})=# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|-<exp<c!$1(&""*|:",M$^F_^k"#Symbol^:#&c0  /7/1:"&c0!*,M$(%:!-<|
+%|hat-[:"f:!-]}_^:"k}}: M:!,F:#&c0  .[:!&c0!*-<exp<c!$1(%$^:#&c0  t|
+%|^:"&c0!*3_:#&c0  /7/1:"&c0!*,K$(%:!-<hat-[:#&c0  q:!&c0!*-]}^|
+%|:"3_}}: ;bP;/":!;bP8 ,F:#&c0  /?: ;bP;&c0!*/":!;bP8 : M:!,F,]-<|
+%|exp<c!$1(%$^:"F_^k:#&c0  /7/1:"&c0!*,K$(%:!-<hat-[:"f:!-]}_^:"k}}|
+%|:!-<exp<c!$1('$^:#&c0  t^:"&c0!*3_:#&c0  /7/1:"&c0!* ,K$(%:!-<|
+%|hat-[:#&c0  q:!&c0!*-]}^:"3_}}: ;8/<:";bP8kintr: ;8/=:!;bP8 : -;|
+%|}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \exp\left({-{F}^{k}\cdot \nabla -{\hat{f}}^{k}}\right){\cal M}&\approx \exp\left({{\tau }_{3}\cdot \nabla +{\hat{\theta }}_{3}}\right)\nonumber \\
+ &\Downarrow \nonumber \\
+ {\cal M}&=\exp\left({{F}^{k}\cdot \nabla +{\hat{f}}^{k}}\right)\exp\left({{\tau }_{3}\cdot \nabla \ +{\hat{\theta }}_{3}}\right)\label{kintr} \end{align}
+%
+%
+Now I can apply the Baker-Campbell-Hausdorff formula (CBH) to go to the next step in the iteration:
+%
+%]|Expr|[#b @`b___})4# b'4" Chicago^: ;bP8&c0!*-="!Helvetica|:! |
+%|<c!$1(#$^""*|:"F_(#k,K1},L$^f_(#k,K1}}}:!,F,]<c!$1(#$^:"F_^k,L|
+%|$^f_^k}},K<c!$1(#$^"#Symbol^:#&c0  t^:"&c0!*3_,L$^:#&c0  q^:"&c0!*3|
+%|_}},K<2^1^2}<c!,Q)## b'4<c!$1(#$^F_^k,L$^f_^k}},L<c!$1(#$^:#&c0  t|
+%|^:"&c0!*3_,L$^:#&c0  q^:"&c0!*3_}}}& b!( b"0 b#8 b$@ b%H b&P!WW}}|
+%|,K"$Monaco^:$higher order:"'b M:! : ;8/<:";bP8cbhft: ;8/=;bP8-;|
+%|}& b!( b"0 b#8 b$@ b%H b&P!WW}]|[
+\begin{align} \left({{F}^{k+1},{f}^{k+1}}\right)&=\left({{F}^{k},{f}^{k}}\right)+\left({{\tau }_{3},{\theta }_{3}}\right)+{1 \over 2}\left\langle{\left({{F}^{k},{f}^{k}}\right),\left({{\tau }_{3},{\theta }_{3}}\right)}\right\rangle+{\rm h}{\rm i}{\rm g}{\rm h}{\rm e}{\rm r}~{\rm o}{\rm r}{\rm d} {\rm e}{\rm r}\cdots \label{cbhft}\end{align}
+The Lie bracket in \eq{cbhft} was defined in  \eqs{liebra} and \eqe{liebrafpp}.
+
+ \subsection{ Validation of all these ``DA'' operators }\label{sec:log}
+
+Below is a code fragment which allows us to illustrate the results of \secs{sec:compo}, \sece{sec:trans} and \sece{sec:transbracket}:
+
+
+A=exp(vf)      ~~~~~~~~~\mbox{{\color{green} implements   \eq{eq:ko}}}\hfill\linebreak
+f=c_logf_spin(my_map)    ~~~~~~~~~~~~~~~ \mbox{{\color{green} implements the result of \sec{sec:log}}}\hfill\linebreak
+ 
+id=A**(-1)*my_map*A  \hfill\linebreak
+f_tilde=c_logf_spin(id) ~~~ \mbox{{\color{green} Uses the logarithm to get the results of \eq{aacts}}} \hfill\linebreak
+
+vf_s=A*f ~~~~~~~~~  \mbox{{\color{green} Implements \eq{eq:transfgrag}}}    \hfill\linebreak   
+vf_a=exp(vf,f) ~~~~~~~~  \mbox{{\color{green} Implements \eq{afpp}}} \hfill\linebreak
+
+vf_s=vf_s-f_tilde  ~~~~~~~~   \mbox{{\color{green} Compares the logarithm of \eq{aacts} with \eq{eq:transfgrag}}}    \hfill\linebreak
+\mbox{call c_full_norm_vector_field(vf_s,norm)}\hfill\linebreak
+\mbox{print *, "norm",norm} \hfill\linebreak
+\mbox{vf_a=vf_a-f_tilde}  ~~~~~~~~   \mbox{{\color{green} Compares the logarithm of \eq{aacts} with \eq{afpp}}} \hfill\linebreak
+\mbox{call c_full_norm_vector_field(vf_a,norm)} \hfill\linebreak
+\mbox{print *, "norm",norm} \hfill\linebreak
+
+
+The norms produced in the above fragment are zero to machine precision provided that map and vector fields involved have {\bf no} constants parts. All differential operators produce self-consistent results. For the mathematicians, this result comes from the fact that all the Lie operator form a differential algebra. For physicists, they are self-consistent because they are all around an orbit with no feed down effects.
+
 \bibliography{nlinear}
 
 
